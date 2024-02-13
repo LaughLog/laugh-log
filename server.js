@@ -4,8 +4,8 @@ import testRouter from './server/api/test.js';
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production';
-const port = 'https://laugh-log.vercel.app' || 5173;
-const base = '/';
+const port = process.env.PORT || 5173;
+const base = process.env.BASE || '/';
 
 // Cached production assets
 const templateHtml = isProduction
