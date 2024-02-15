@@ -7,7 +7,7 @@ const GlobalStyles = () => {
 export default GlobalStyles;
 
 const resetCSS = css`
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap');
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
   html,
   body,
@@ -142,6 +142,7 @@ const resetCSS = css`
   #root {
     color: black;
     background: white;
+    font-family: 'Pretendard';
   }
 
   *,
