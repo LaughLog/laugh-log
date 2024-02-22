@@ -19,7 +19,7 @@ import { db } from '@/firebase/app';
 
 const ChatContainer = () => {
   // ERROR: Module not found: Can't resolve 'bufferutil' in '/Users/jithoon/Documents/laugh-lab/client/node_modules/ws/lib'
-  let socket = io('http://localhost:5001/chat', {
+  let socket = io('https://laugh-log.store', {
     withCredentials: true,
     extraHeaders: {
       'my-custom-header': 'abcd'
