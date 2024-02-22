@@ -40,4 +40,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5001, () => console.log("Listening to port 5001"));
+server.listen(8080, () => console.log("Listening to port 8080"));
