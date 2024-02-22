@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 const styles = {
   button: {
-    width: "10%",
+    width: '10%',
     height: 50,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     borderRadius: 10,
     fontSize: 18,
-    backgroundColor: "#34b7f1",
+    backgroundColor: '#34b7f1',
     borderWidth: 0,
-    color: "#fff",
+    color: '#fff'
   },
   textarea: {
-    width: "60%",
+    width: '60%',
     height: 50,
     borderRadius: 10,
     borderWidth: 0,
     padding: 10,
-    fontSize: 18,
+    fontSize: 18
   },
   textContainer: {
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
+  }
 };
 
 interface Props {
@@ -33,14 +33,14 @@ interface Props {
 }
 
 const InputText = ({ addMessage }: Props) => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   function addAMessage() {
     addMessage({
-      message,
+      message
     });
 
-    setMessage("");
+    setMessage('');
   }
 
   return (
@@ -50,7 +50,7 @@ const InputText = ({ addMessage }: Props) => {
         rows={6}
         placeholder="Write something..."
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={e => setMessage(e.target.value)}
       ></textarea>
       <button onClick={addAMessage} style={styles.button}>
         ENTER

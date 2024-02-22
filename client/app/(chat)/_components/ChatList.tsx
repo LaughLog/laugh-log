@@ -1,5 +1,5 @@
-import React from "react";
-import { ChatBoxReciever, ChatBoxSender } from "./ChatBox";
+import React from 'react';
+import { ChatBoxReciever, ChatBoxSender } from './ChatBox';
 
 interface Props {
   chats: any;
