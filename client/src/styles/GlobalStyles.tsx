@@ -136,6 +136,11 @@ const resetCSS = css`
     border-collapse: collapse;
     border-spacing: 0;
   }
+  button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
 
   html,
   body,
