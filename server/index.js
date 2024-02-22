@@ -5,8 +5,7 @@ const app = express();
 
 const server = http.createServer(app);
 
-app.get("/", (req, res) => {
-  // set response content
+app.get("/", (_req, res) => {
   res.send(`<html>
                   <body>
                       <h1 style="color:blue;text-align: center;margin-top: 100px;"> [Version ${version}]: This is AMAZING!!! Like & Subscribe!</h1>
@@ -15,10 +14,6 @@ app.get("/", (req, res) => {
                       </div>
                   </body>
                  </html>`);
-
-  console.log(
-    `[Version ${version}]: New request => http://${hostname}:${port}` + req.url
-  );
 });
 
 const io = new Server(server, {
@@ -45,4 +40,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(8080, () => console.log("Listening to port 8080"));
+server.listen(5001, () => console.log("Listening to port 5001"));
