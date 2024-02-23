@@ -1,14 +1,5 @@
 import type { Config } from 'tailwindcss';
 
-const fontCreator = (fontSize: string, fontWeight: number) => {
-  return {
-    css: {
-      fontSize,
-      fontWeight
-    }
-  };
-};
-
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
