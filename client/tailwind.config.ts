@@ -34,22 +34,6 @@ const config: Config = {
         gray100: '#F9F9FA',
         error: '#BD2222',
         success: '#0CBC72'
-      },
-      fontSize: {
-        subtitle1: ['40px', { lineHeight: '1.5', fontWeight: 700 }],
-        subtitle2: ['32px', { lineHeight: '1.5', fontWeight: 700 }],
-        subtitle3: ['28px', { lineHeight: '1.5', fontWeight: 700 }],
-        subtitle4: ['24px', { lineHeight: '1.5', fontWeight: 700 }],
-        subtitle5: ['20px', { lineHeight: '1.5', fontWeight: 700 }],
-        body1b: ['18px', { lineHeight: '1.5', fontWeight: 700 }],
-        body1r: ['18px', { lineHeight: '1.5', fontWeight: 400 }],
-        body2b: ['16px', { lineHeight: '1.5', fontWeight: 700 }],
-        body2r: ['16px', { lineHeight: '1.5', fontWeight: 400 }],
-        body3b: ['14px', { lineHeight: '1.6', fontWeight: 700 }],
-        body3r: ['14px', { lineHeight: '1.6', fontWeight: 400 }],
-        caption1b: ['12px', { lineHeight: '1.6', fontWeight: 700 }],
-        caption1r: ['12px', { lineHeight: '1.6', fontWeight: 400 }],
-        caption2b: ['10px', { lineHeight: '1.5', fontWeight: 700 }]
       }
     }
   },

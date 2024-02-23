@@ -3,63 +3,151 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  margin: 0;
-  padding: 0;
-  font: inherit;
-  color: inherit;
-  box-sizing: border-box;
-  font-family:
-    'Pretendard Variable',
-    Pretendard,
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    Roboto,
-    'Helvetica Neue',
-    'Segoe UI',
-    'Apple SD Gothic Neo',
-    'Noto Sans KR',
-    'Malgun Gothic',
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol',
-    sans-serif;
-}
-*,
-:after,
-:before {
-  box-sizing: border-box;
-}
-:root {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  cursor: default;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  tab-size: 4;
-}
-html,
-body {
-  height: 100%;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    box-sizing: border-box;
+    font-family:
+      'Pretendard Variable',
+      Pretendard,
+      -apple-system,
+      BlinkMacSystemFont,
+      system-ui,
+      Roboto,
+      'Helvetica Neue',
+      'Segoe UI',
+      'Apple SD Gothic Neo',
+      'Noto Sans KR',
+      'Malgun Gothic',
+      'Apple Color Emoji',
+      'Segoe UI Emoji',
+      'Segoe UI Symbol',
+      sans-serif;
+  }
+  *,
+  :after,
+  :before {
+    box-sizing: border-box;
+  }
+  :root {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    cursor: default;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    tab-size: 4;
+  }
+  html,
+  body {
+    height: 100%;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+      scrollbar-width: none;
+    }
     scrollbar-width: none;
   }
-  scrollbar-width: none;
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+  button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  a {
+    text-decoration: none;
+  }
 }
-img,
-svg {
-  display: block;
-  max-width: 100%;
-}
-button {
-  background: none;
-  border: 0;
-  cursor: pointer;
-}
-a {
-  text-decoration: none;
+
+@layer utilities {
+  .subtitle1 {
+    font-size: 40px;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+
+  .subtitle2 {
+    font-size: 32px;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+
+  .subtitle3 {
+    font-size: 28px;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+
+  .subtitle4 {
+    font-size: 24px;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+
+  .subtitle5 {
+    font-size: 20px;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+
+  .body1b {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+
+  .body1r {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .body2b {
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+
+  .body2r {
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .body3b {
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 700;
+  }
+
+  .body3r {
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .caption1b {
+    font-size: 12px;
+    line-height: 1.6;
+    font-weight: 700;
+  }
+
+  .caption1r {
+    font-size: 12px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .caption2b {
+    font-size: 10px;
+    line-height: 1.5;
+    font-weight: 700;
+  }
 }
