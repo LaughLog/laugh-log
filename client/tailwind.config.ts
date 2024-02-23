@@ -14,7 +14,10 @@ const config = {
       center: true,
       padding: '2rem',
       screens: {
-        '2xl': '1400px'
+        desktop: '1440px',
+        laptop: '992px',
+        tablet: '768px',
+        mobile: '576px'
       }
     },
     extend: {
