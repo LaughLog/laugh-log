@@ -20,6 +20,9 @@ const config = {
         mobile: '576px'
       }
     },
+    backgroundImage: {
+      signIn: "url('/sign-in-bg.svg')"
+    },
     extend: {
       colors: {
         // laugh-log settings
