@@ -7,7 +7,7 @@ const CustomSignInButton = () => {
   return (
     <SignInButton>
       <Button>
-        <Link href={'/'}>로그인</Link>
+        <Link href={'/dashboard'}>로그인</Link>
       </Button>
     </SignInButton>
   );
