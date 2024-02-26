@@ -1,4 +1,4 @@
-import { SignIn } from '@clerk/nextjs';
+// import { SignIn } from '@clerk/nextjs';
 import Image from 'next/image';
 
 import './sign-in.css';
@@ -15,7 +15,7 @@ const Page = () => {
           <br />
           접속합니다.
         </span>
-        <SignIn />
+        {/* <SignIn /> */}
       </div>
       <Image src="/sign-in-welcome.svg" alt="Logo" height={600} width={720} />
     </div>

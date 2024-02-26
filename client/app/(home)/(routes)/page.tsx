@@ -1,16 +1,16 @@
-import { Button } from '@/components/ui/button';
+import Header from '../_components/_headerComponents/header';
+
+import BannerSection from '../_components/bannerSection';
+import DescSection from '../_components/bodySection';
+import FooterSection from '../_components/footerSection';
 
 export default function Home() {
   return (
-    <main>
-      <div className="text-coral800">적용1</div>
-      <span className="subtitle1 w-full text-coral800">수정된 텍스트</span>
-      <div className="text-subtitle3">적용3</div>
-      <Button>프라이머리</Button>
-      <Button variant="secondary">세컨더리</Button>
-      <Button variant="sidebar" className="w-[100%]">
-        초대
-      </Button>
+    <main className="bg-signIn relative bg-coral200 pt-[40px]">
+      <Header />
+      <BannerSection></BannerSection>
+      <DescSection></DescSection>
+      <FooterSection></FooterSection>
     </main>
   );
 }
