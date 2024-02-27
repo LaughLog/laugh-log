@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
 
 import './globals.css';
+import ReactQueryProvider from '@/provider/react-query-provider';
 
 export const metadata: Metadata = {
   title: 'Laugh Log : 웃음으로 가득한 회의록',
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="ko">
-        <body>{children}</body>
+        <body>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </body>
       </html>
     </ClerkProvider>
   );
