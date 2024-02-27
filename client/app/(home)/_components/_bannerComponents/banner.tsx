@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 
-import lines from '@/public/lines.png';
 import mainText from '@/public/main-text.svg';
 
 import starCircle from '@/public/star.png';
@@ -17,12 +16,6 @@ const Banner = () => {
 
   return (
     <main className="flex justify-center px-[24px] tablet:px-[80px] desktop:px-[148px]">
-      <Image
-        className="absolute top-[32px]"
-        src={lines}
-        width={1440}
-        alt="lines"
-      ></Image>
       <section className="relative">
         <Image
           className="hover-sticker absolute bottom-0 right-[40px] top-0 my-auto"

@@ -15,10 +15,10 @@ const config = {
       padding: '2rem'
     },
     screens: {
-      desktop: '1440px',
-      laptop: '992px',
-      tablet: '768px',
-      mobile: '576px'
+      desktop: '1441px',
+      laptop: '993px',
+      tablet: '769px',
+      mobile: '577px'
     },
     backgroundImage: {
       signIn: "url('/sign-in-bg.svg')"

@@ -1,4 +1,4 @@
-import Banner from './_headerComponents/banner';
+import Banner from './_bannerComponents/banner';
 
 const BannerSection = () => {
   return (
