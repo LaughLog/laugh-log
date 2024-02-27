@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const useRectOnTop = () => {
+const useRectOnTop = (CEIL = 0) => {
   const hookRef = useRef(null);
   const [isOnTop, setIsOnTop] = useState(false);
 
@@ -13,7 +13,7 @@ const useRectOnTop = () => {
 
     const handleScroll = () => {
       const rect = target.getBoundingClientRect();
-      if (rect.top <= 0) {
+      if (rect.top <= CEIL) {
         setIsOnTop(true);
       } else {
         setIsOnTop(false);

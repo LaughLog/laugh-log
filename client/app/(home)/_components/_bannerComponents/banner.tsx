@@ -9,10 +9,10 @@ import starNoBg from '@/public/no-bg-star.png';
 import pointingHand from '@/public/pointing-hand.png';
 import goodJobSticker from '@/public/tomato-sticker.png';
 
-import useResize from '@/hook/useResize';
+import useInnerWidth from '@/hook/useInnerWidth';
 
 const Banner = () => {
-  const [innerWidth] = useResize();
+  const [innerWidth] = useInnerWidth();
 
   return (
     <main className="flex justify-center px-[24px] tablet:px-[80px] desktop:px-[148px]">
@@ -24,7 +24,7 @@ const Banner = () => {
           width={innerWidth / 10}
         />
         <Image
-          className="hover-sticker animate-spin-slow absolute left-[20px] top-0"
+          className="hover-sticker absolute left-[20px] top-0 animate-spin-slow"
           src={starNoBg}
           alt="star-no-bg"
           width={innerWidth / 8}
