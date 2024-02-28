@@ -9,7 +9,7 @@ import FooterSection from '../_components/footerSection';
 
 export default function Home() {
   return (
-    <main className="bg-signIn relative bg-coral200 pt-[40px]">
+    <main className="relative w-full overflow-x-hidden bg-coral200 bg-signIn pt-[40px]">
       <Header />
       <Image
         className="absolute top-[100px] w-full opacity-60 tablet:top-[32px]"
