@@ -1,16 +1,25 @@
-import { Button } from '@/components/ui/button';
+import Header from '../_components/_bannerComponents/header';
+import Image from 'next/image';
+
+import lines from '@/public/lines.png';
+
+import BannerSection from '../_components/bannerSection';
+import DescSection from '../_components/bodySection';
+import FooterSection from '../_components/footerSection';
 
 export default function Home() {
   return (
-    <main>
-      <div className="text-coral800">적용1</div>
-      <span className="subtitle1 w-full text-coral800">수정된 텍스트</span>
-      <div className="text-subtitle3">적용3</div>
-      <Button>프라이머리</Button>
-      <Button variant="secondary">세컨더리</Button>
-      <Button variant="sidebar" className="w-[100%]">
-        초대
-      </Button>
+    <main className="relative w-full bg-coral200 bg-signIn pt-10">
+      <Header />
+      <Image
+        className="absolute top-[100px] w-full opacity-60 tablet:top-8"
+        src={lines}
+        width={1440}
+        alt="lines"
+      ></Image>
+      <BannerSection />
+      <DescSection />
+      <FooterSection />
     </main>
   );
 }
