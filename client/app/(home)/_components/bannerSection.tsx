@@ -1,4 +1,8 @@
-import Banner from './_bannerComponents/banner';
+import dynamic from 'next/dynamic';
+
+const Banner = dynamic(() => import('./_bannerComponents/banner'), {
+  ssr: false
+});
 
 const BannerSection = () => {
   return (
