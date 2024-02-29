@@ -12,12 +12,12 @@ const Header = () => {
     <main
       ref={hookRef as React.MutableRefObject<null>}
       className={cn(
-        'sticky top-0 z-10 flex h-[56px] w-[100%] items-center justify-between px-[24px] tablet:px-[80px] desktop:px-[148px]',
+        'sticky top-0 z-10 flex h-14 w-[100%] items-center justify-between px-6 tablet:px-20 desktop:px-[148px]',
         { 'blur-transparent': isOnTop }
       )}
     >
       <span className="subtitle4">LaughLog</span>
-      <div className="flex gap-[16px]">
+      <div className="flex gap-4">
         {/* <Button variant="secondary">데모</Button> */}
         <Button>
           <Link href="/login">구글 로그인</Link>

@@ -9,17 +9,17 @@ import FooterSection from '../_components/footerSection';
 
 export default function Home() {
   return (
-    <main className="relative w-full overflow-x-hidden bg-coral200 bg-signIn pt-[40px]">
+    <main className="relative w-full bg-coral200 bg-signIn pt-10">
       <Header />
       <Image
-        className="absolute top-[100px] w-full opacity-60 tablet:top-[32px]"
+        className="absolute top-[100px] w-full opacity-60 tablet:top-8"
         src={lines}
         width={1440}
         alt="lines"
       ></Image>
-      <BannerSection></BannerSection>
-      <DescSection></DescSection>
-      <FooterSection></FooterSection>
+      <BannerSection />
+      <DescSection />
+      <FooterSection />
     </main>
   );
 }
