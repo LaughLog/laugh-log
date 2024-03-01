@@ -5,7 +5,7 @@ export default authMiddleware({
   publicRoutes: ['/'],
   // Routes that can always be accessed, and have
   // no authentication information
-  ignoredRoutes: ['/dashboard/123']
+  ignoredRoutes: ['/dashboard/123', '/dashboard', '/whiteboard']
 });
 
 export const config = {
