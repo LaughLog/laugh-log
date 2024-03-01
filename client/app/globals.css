@@ -227,7 +227,7 @@
   }
 }
 
-/* TRANSITION OR BG-OPTIONS */
+/* TRANSITION */
 @layer utilities {
   .hover-sticker {
     transition: all 0.2s ease-in-out;
@@ -236,9 +236,16 @@
   .hover-sticker:hover {
     transform: scale(1.125);
   }
+}
 
+/*  BG-OPTIONS */
+@layer utilities {
   .blur-transparent {
     background-color: rgba(255, 243, 239, 0.8); /* 요소를 반투명 처리 해준 후 */
     backdrop-filter: blur(15px); /* 요소 뒤에서 효과 적용 */
+  }
+
+  .post-it {
+    clip-path: polygon(0 0, 80% 0%, 100% 20%, 100% 100%, 0 100%);
   }
 }
