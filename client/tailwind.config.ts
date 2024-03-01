@@ -12,13 +12,16 @@ const config = {
   theme: {
     container: {
       center: true,
-      padding: '2rem',
-      screens: {
-        desktop: '1440px',
-        laptop: '992px',
-        tablet: '768px',
-        mobile: '576px'
-      }
+      padding: '2rem'
+    },
+    screens: {
+      desktop: '1441px',
+      laptop: '993px',
+      tablet: '769px',
+      mobile: '577px'
+    },
+    backgroundImage: {
+      signIn: "url('/sign-in-bg.svg')"
     },
     extend: {
       colors: {
@@ -94,7 +97,8 @@ const config = {
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out'
+        'accordion-up': 'accordion-up 0.2s ease-out',
+        'spin-slow': 'spin 8s linear infinite'
       }
     }
   },
