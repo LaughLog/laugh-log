@@ -1,9 +1,11 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { SignedIn, SignedOut } from '@clerk/nextjs';
+
 import useRectOnTop from '@/hook/useRectOnTop';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
+import CustomSignIn from '@/components/auth/customSignIn';
+import CustomSignOut from '@/components/auth/customSignOut';
 
 const Header = () => {
   const [hookRef, isOnTop] = useRectOnTop();
@@ -18,10 +20,12 @@ const Header = () => {
     >
       <span className="subtitle4">LaughLog</span>
       <div className="flex gap-4">
-        {/* <Button variant="secondary">데모</Button> */}
-        <Button>
-          <Link href="/login">구글 로그인</Link>
-        </Button>
+        <SignedIn>
+          <CustomSignOut />
+        </SignedIn>
+        <SignedOut>
+          <CustomSignIn />
+        </SignedOut>
       </div>
     </main>
   );

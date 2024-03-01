@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Button } from '../ui/button';
 import { SignInButton } from '@clerk/nextjs';
 
-const CustomSignInButton = () => {
+const CustomSignIn = () => {
   return (
     <SignInButton>
       <Button>
@@ -13,4 +13,4 @@ const CustomSignInButton = () => {
   );
 };
 
-export default CustomSignInButton;
+export default CustomSignIn;
