@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Button } from '../ui/button';
 
-const CustomSignOutButton = () => {
+const CustomSignOut = () => {
   return (
     <SignOutButton>
       <Button>
@@ -13,4 +13,4 @@ const CustomSignOutButton = () => {
   );
 };
 
-export default CustomSignOutButton;
+export default CustomSignOut;
