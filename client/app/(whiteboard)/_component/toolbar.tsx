@@ -19,9 +19,9 @@ import {
 import { TOOL, type ToolValueType, type MenuProps } from '@/constants/toolbar';
 
 // COMPONENTS
-import PostIt from './_post-it/PostIt';
-import Stickers from './_stickers/stickers';
-import MainTool from './main-tool-container/main-tool-container';
+import PostIt from './_toolbar-component/PostIt';
+import Stickers from './_toolbar-component/stickers';
+import MainTool from './_toolbar-component/main-tool-container';
 
 interface ToolbarProps {
   onSelect: React.Dispatch<React.SetStateAction<ToolValueType>>;
