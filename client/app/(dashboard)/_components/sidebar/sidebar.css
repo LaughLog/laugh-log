@@ -1,0 +1,33 @@
+.cl-internal-1ntkffu {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
+
+.cl-internal-b3fm6y,
+.cl-internal-hnodbb {
+  display: none;
+}
+
+.cl-internal-14gs84a {
+  border-bottom: none;
+}
+
+.userList .cl-internal-1pieqpu {
+  &:not(:first-child) {
+    display: none;
+  }
+}
+
+.userList .cl-internal-1tvclx8:hover {
+  background-color: transparent;
+}
+
+.cl-internal-14gs84a tr > td {
+  padding: 10px;
+}
+
+.cl-internal-g6a67s:focus,
+.cl-internal-1cyy55d:focus {
+  box-shadow: #ed774d 0px 0px 0px 3px;
+}
