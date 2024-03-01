@@ -16,7 +16,7 @@ export default function Home() {
         src={lines}
         width={1440}
         alt="lines"
-      ></Image>
+      />
       <BannerSection />
       <DescSection />
       <FooterSection />

@@ -3,7 +3,7 @@ interface MainProps {
 }
 
 const Main = ({ children }: MainProps) => {
-  return <div className="flex h-full w-full flex-col">{children}</div>;
+  return <main className="h-full w-full">{children}</main>;
 };
 
 export default Main;

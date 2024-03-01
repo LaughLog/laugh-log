@@ -1,5 +1,5 @@
 const TeamBoard = () => {
-  return <main className="h-full w-full bg-[green]"></main>;
+  return <div className="h-[calc(100%-272px)] w-full bg-coral400">팀보드</div>;
 };
 
 export default TeamBoard;
