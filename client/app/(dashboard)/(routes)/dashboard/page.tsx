@@ -1,8 +1,19 @@
+'use client';
+
+import { useOrganization } from '@clerk/nextjs';
+
+import { addOrganization } from '@/lib/firebaseUtils';
 import Sidebar from '@/app/(dashboard)/_components/sidebar/sidebar';
 import StartWithTemplate from '@/app/(dashboard)/_components/startWithTemplate';
 import TeamBoard from '@/app/(dashboard)/_components/teamBoard';
 
 const Dashboard = () => {
+  const { organization } = useOrganization();
+
+  if (organization) {
+    addOrganization(organization.id);
+  }
+
   return (
     <div className="flex h-full w-full">
       <Sidebar />
