@@ -1,4 +1,5 @@
-import { setDoc, getDocs, doc, collection } from 'firebase/firestore';
+import { setDoc, getDocs, addDoc, doc, collection } from 'firebase/firestore';
+import { format } from 'date-fns';
 
 import { db } from '@/firebase/app';
 
@@ -18,4 +19,12 @@ export const getBoardList = async (organizationId: string) => {
       date: doc.data().date
     };
   });
+};
+
+export const addBoard = async (organizationId: string) => {
+  const docRef = await addDoc(collection(db, 'team', organizationId, 'board'), {
+    name: 'Untitled',
+    date: format(new Date(), 'yyyy.MM.dd')
+  });
+  return docRef.id;
 };

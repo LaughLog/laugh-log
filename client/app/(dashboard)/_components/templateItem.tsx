@@ -4,20 +4,19 @@ import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-interface TemplateItemProps {
-  name: string;
-  imageUrl: string;
-}
+import { TemplateItemProps } from '@/types/dashboard';
+import { addBoard } from '@/lib/firebaseUtils';
 
-const TemplateItem = ({ name, imageUrl }: TemplateItemProps) => {
+const TemplateItem = ({
+  organizationId,
+  name,
+  imageUrl
+}: TemplateItemProps) => {
   const router = useRouter();
 
-  const clickToGenerateHandler = () => {
-    /*
-      대충 새로운 workspacet생성해서 id 생성
-    */
-
-    router.push(`/workspace/id`);
+  const clickToGenerateHandler = async () => {
+    const boardId = await addBoard(organizationId);
+    router.push(`/workspace/${boardId}`);
   };
 
   return (

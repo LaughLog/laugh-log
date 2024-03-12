@@ -1,4 +1,6 @@
-const EmptyBoards = () => {
+import { EmptyBoardsProps } from '@/types/dashboard';
+
+const EmptyBoards = ({ onClick }: EmptyBoardsProps) => {
   return (
     <div className="flex h-[222px] w-full shrink-0 flex-col items-center justify-center gap-6 overflow-y-scroll rounded bg-coral200 p-4">
       <span className="text-center">
@@ -6,7 +8,10 @@ const EmptyBoards = () => {
         <br />
         새로운 보드를 생성해보세요!
       </span>
-      <button className="body3b h-[46px] w-[149px] rounded-xl bg-coral600 text-white hover:cursor-pointer">
+      <button
+        className="body3b h-[46px] w-[149px] rounded-xl bg-coral600 text-white hover:cursor-pointer"
+        onClick={onClick}
+      >
         새로운 보드 만들기
       </button>
     </div>

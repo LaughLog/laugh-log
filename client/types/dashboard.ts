@@ -1,5 +1,19 @@
+export type StartWithTemplateProps = {
+  organizationId: string;
+};
+
+export type TemplateItemProps = {
+  organizationId: string;
+  name: string;
+  imageUrl: string;
+};
+
 export type TeamBoardProps = {
   organizationId: string;
+};
+
+export type EmptyBoardsProps = {
+  onClick: () => void;
 };
 
 export type BoardListType = {
