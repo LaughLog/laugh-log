@@ -9,14 +9,14 @@ import BoardList from './boardList';
 const TeamBoard = ({ organizationId }: TeamBoardProps) => {
   const [boardList, setBoardList] = useState<BoardListType>();
 
-  const fetchBoardList = async () => {
-    const data = await getBoardList(organizationId);
-    setBoardList(data);
-  };
-
   useEffect(() => {
+    const fetchBoardList = async () => {
+      const data = await getBoardList(organizationId);
+      setBoardList(data);
+    };
+
     fetchBoardList();
-  });
+  }, [organizationId]);
 
   const onClick = async () => {
     await addBoard(organizationId);
