@@ -22,12 +22,12 @@ import { renameBoard } from '@/lib/firebaseUtils';
 
 const MenuItem = ({
   boardId,
-  name,
+  boardName,
   header,
   description,
   button
 }: MenuItemProps) => {
-  const [boardName, setBoardName] = useState(name);
+  const [name, setName] = useState(boardName);
   const { organization } = useOrganization();
 
   const handleClick = async () => {
@@ -36,7 +36,7 @@ const MenuItem = ({
         await renameBoard({
           organizationId: organization.id,
           boardId,
-          name: boardName
+          boardName: name
         });
         window.location.reload();
       }
@@ -67,9 +67,9 @@ const MenuItem = ({
         {header === '이름 변경' && (
           <Input
             id="name"
-            defaultValue={name}
+            defaultValue={boardName}
             onChange={e => {
-              setBoardName(e.target.value);
+              setName(e.target.value);
             }}
           />
         )}

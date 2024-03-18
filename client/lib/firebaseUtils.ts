@@ -39,12 +39,12 @@ export const addBoard = async (organizationId: string) => {
 export const renameBoard = async ({
   organizationId,
   boardId,
-  name
+  boardName
 }: {
   organizationId: string;
   boardId: string;
-  name: string;
+  boardName: string;
 }) => {
   const docRef = doc(db, 'team', organizationId, 'board', boardId);
-  await updateDoc(docRef, { name: name });
+  await updateDoc(docRef, { name: boardName });
 };

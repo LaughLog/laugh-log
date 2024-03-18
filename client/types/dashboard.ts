@@ -27,20 +27,20 @@ export type BoardListProps = {
 };
 
 export type BoardItemProps = {
-  id: string;
-  name: string;
+  boardId: string;
+  boardName: string;
   date: string;
 };
 
 export type BoardMenuProps = {
   children: React.ReactNode;
-  id: string;
-  name: string;
+  boardId: string;
+  boardName: string;
 };
 
 export type MenuItemProps = {
   boardId: string;
-  name: string;
+  boardName: string;
   header: string;
   description: string;
   button: string;
