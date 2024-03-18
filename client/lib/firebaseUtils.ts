@@ -3,6 +3,7 @@ import {
   getDocs,
   addDoc,
   updateDoc,
+  deleteDoc,
   doc,
   collection
 } from 'firebase/firestore';
@@ -47,4 +48,14 @@ export const renameBoard = async ({
 }) => {
   const docRef = doc(db, 'team', organizationId, 'board', boardId);
   await updateDoc(docRef, { name: boardName });
+};
+
+export const deleteBoard = async ({
+  organizationId,
+  boardId
+}: {
+  organizationId: string;
+  boardId: string;
+}) => {
+  await deleteDoc(doc(db, 'team', organizationId, 'board', boardId));
 };

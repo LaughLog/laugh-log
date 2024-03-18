@@ -18,7 +18,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { renameBoard } from '@/lib/firebaseUtils';
+import { renameBoard, deleteBoard } from '@/lib/firebaseUtils';
 
 const MenuItem = ({
   boardId,
@@ -38,8 +38,10 @@ const MenuItem = ({
           boardId,
           boardName: name
         });
-        window.location.reload();
+      } else {
+        await deleteBoard({ organizationId: organization.id, boardId });
       }
+      window.location.reload();
     }
   };
 
