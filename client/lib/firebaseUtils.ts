@@ -1,4 +1,11 @@
-import { setDoc, getDocs, addDoc, doc, collection } from 'firebase/firestore';
+import {
+  setDoc,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+  collection
+} from 'firebase/firestore';
 import { format } from 'date-fns';
 
 import { db } from '@/firebase/app';
@@ -27,4 +34,17 @@ export const addBoard = async (organizationId: string) => {
     date: format(new Date(), 'yyyy.MM.dd')
   });
   return docRef.id;
+};
+
+export const renameBoard = async ({
+  organizationId,
+  boardId,
+  name
+}: {
+  organizationId: string;
+  boardId: string;
+  name: string;
+}) => {
+  const docRef = doc(db, 'team', organizationId, 'board', boardId);
+  await updateDoc(docRef, { name: name });
 };

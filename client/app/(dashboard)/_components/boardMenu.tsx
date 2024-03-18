@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import MenuItem from './MenuItem';
 
-const BoardMenu = ({ children, name }: BoardMenuProps) => {
+const BoardMenu = ({ children, id, name }: BoardMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -16,12 +16,14 @@ const BoardMenu = ({ children, name }: BoardMenuProps) => {
         className="flex flex-col"
       >
         <MenuItem
+          boardId={id}
           name={name}
           header="이름 변경"
           description="변경할 이름을 입력해주세요."
           button="수정"
         />
         <MenuItem
+          boardId={id}
           name={name}
           header="보드 삭제"
           description="보드를 삭제하시겠습니까?"

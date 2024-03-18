@@ -1,3 +1,8 @@
+'use client';
+
+import { useState } from 'react';
+import { useOrganization } from '@clerk/nextjs';
+
 import { MenuItemProps } from '@/types/dashboard';
 import {
   AlertDialog,
@@ -13,8 +18,31 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { renameBoard } from '@/lib/firebaseUtils';
 
-const MenuItem = ({ name, header, description, button }: MenuItemProps) => {
+const MenuItem = ({
+  boardId,
+  name,
+  header,
+  description,
+  button
+}: MenuItemProps) => {
+  const [boardName, setBoardName] = useState(name);
+  const { organization } = useOrganization();
+
+  const handleClick = async () => {
+    if (organization) {
+      if (header === '이름 변경') {
+        await renameBoard({
+          organizationId: organization.id,
+          boardId,
+          name: boardName
+        });
+        window.location.reload();
+      }
+    }
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -36,13 +64,21 @@ const MenuItem = ({ name, header, description, button }: MenuItemProps) => {
             {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        {header === '이름 변경' && <Input id="name" defaultValue={name} />}
+        {header === '이름 변경' && (
+          <Input
+            id="name"
+            defaultValue={name}
+            onChange={e => {
+              setBoardName(e.target.value);
+            }}
+          />
+        )}
         <AlertDialogFooter className="flex flex-row justify-end gap-2">
           <AlertDialogCancel asChild className="mt-0">
             <Button variant="secondary">취소</Button>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button>{button}</Button>
+            <Button onClick={handleClick}>{button}</Button>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

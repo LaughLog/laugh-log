@@ -34,10 +34,12 @@ export type BoardItemProps = {
 
 export type BoardMenuProps = {
   children: React.ReactNode;
+  id: string;
   name: string;
 };
 
 export type MenuItemProps = {
+  boardId: string;
   name: string;
   header: string;
   description: string;

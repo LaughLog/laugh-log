@@ -9,7 +9,7 @@ const BoardItem = ({ id, name, date }: BoardItemProps) => {
     <Link href={`/workspace/${id}`}>
       <div className="aspect-[300/222] ">
         <div className="relative h-[80%] w-full rounded-md  bg-gray-200">
-          <BoardMenu name={name}>
+          <BoardMenu id={id} name={name}>
             <button className="absolute right-0 top-0">
               <Image
                 src="/board-more.svg"
