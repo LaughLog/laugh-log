@@ -1,6 +1,16 @@
+import { useRouter } from 'next/navigation';
+
+import { addBoard } from '@/lib/firebaseUtils';
 import { EmptyBoardsProps } from '@/types/dashboard';
 
-const EmptyBoards = ({ onClick }: EmptyBoardsProps) => {
+const EmptyBoards = ({ organizationId, onClick }: EmptyBoardsProps) => {
+  const router = useRouter();
+
+  const handleClick = async () => {
+    const boardId = await addBoard(organizationId);
+    router.push(`/workspace/${boardId}`);
+  };
+
   return (
     <div className="flex h-[222px] w-full shrink-0 flex-col items-center justify-center gap-6 overflow-y-scroll rounded bg-coral200 p-4">
       <span className="text-center">
@@ -10,7 +20,7 @@ const EmptyBoards = ({ onClick }: EmptyBoardsProps) => {
       </span>
       <button
         className="body3b h-[46px] w-[149px] rounded-xl bg-coral600 text-white hover:cursor-pointer"
-        onClick={onClick}
+        onClick={handleClick}
       >
         새로운 보드 만들기
       </button>

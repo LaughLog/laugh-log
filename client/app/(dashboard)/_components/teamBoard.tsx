@@ -28,7 +28,7 @@ const TeamBoard = ({ organizationId }: TeamBoardProps) => {
       {boardList?.length ? (
         <BoardList boardList={boardList} />
       ) : (
-        <EmptyBoards onClick={onClick} />
+        <EmptyBoards organizationId={organizationId} onClick={onClick} />
       )}
     </div>
   );

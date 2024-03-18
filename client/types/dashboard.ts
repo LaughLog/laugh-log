@@ -13,6 +13,7 @@ export type TeamBoardProps = {
 };
 
 export type EmptyBoardsProps = {
+  organizationId: string;
   onClick: () => void;
 };
 
