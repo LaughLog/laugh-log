@@ -2,21 +2,33 @@ import { BoardMenuProps } from '@/types/dashboard';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem
+  DropdownMenuContent
 } from '@/components/ui/dropdown-menu';
+import MenuItem from './MenuItem';
 
-const BoardMenu = ({ children }: BoardMenuProps) => {
+const BoardMenu = ({ children, boardId, boardName }: BoardMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent side="right">
-        <DropdownMenuItem className="cursor-pointer">
-          이름 변경
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer text-[#CD2929]">
-          보드 삭제
-        </DropdownMenuItem>
+      <DropdownMenuContent
+        side="right"
+        onClick={e => e.stopPropagation()}
+        className="flex flex-col"
+      >
+        <MenuItem
+          boardId={boardId}
+          boardName={boardName}
+          header="이름 변경"
+          description="변경할 이름을 입력해주세요."
+          button="수정"
+        />
+        <MenuItem
+          boardId={boardId}
+          boardName={boardName}
+          header="보드 삭제"
+          description="보드를 삭제하시겠습니까?"
+          button="삭제"
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );
