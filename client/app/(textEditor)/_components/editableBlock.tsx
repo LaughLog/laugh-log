@@ -45,8 +45,6 @@ const EditableBlock = ({
       ((e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
         !(e.nativeEvent.target as HTMLInputElement)?.innerHTML)
     ) {
-      if (e.nativeEvent.isComposing) return;
-
       const previousBlock = contentEditable.current?.previousElementSibling as
         | HTMLInputElement
         | undefined;
