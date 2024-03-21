@@ -64,7 +64,6 @@ const Toolbar = ({ onSelect, onAddRect, canvas }: ToolbarProps) => {
           canvas={canvas}
           onClick={clickIconboxHandler}
           onAddRect={onAddRect}
-          canvas={canvas}
         />
         <PostIt />
         <Stickers />

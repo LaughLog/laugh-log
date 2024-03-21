@@ -42,13 +42,8 @@ const Whiteboard = () => {
 
   return (
     <div className="h-screen w-screen">
-      <button onClick={() => addRect(canvas!)}>사각형</button>
       <canvas id="canvasEl" />
-      <Toolbar
-        onSelect={setSeletedTool}
-        onAddRect={addRect}
-        canvas={canvas}
-      ></Toolbar>
+      <Toolbar onSelect={setSeletedTool} onAddRect={addRect} canvas={canvas!} />
     </div>
   );
 };
