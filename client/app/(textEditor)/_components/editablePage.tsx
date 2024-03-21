@@ -6,7 +6,6 @@ import { uid } from '@/lib/utils';
 import EditableBlock from './editableBlock';
 import {
   EditablePageProps,
-  Block,
   AddBlockHandlerProps,
   DeleteBlockHandlerProps
 } from '@/types/textEditor';
