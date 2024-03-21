@@ -19,15 +19,18 @@ import {
 import { TOOL, type ToolValueType, type MenuProps } from '@/constants/toolbar';
 
 // COMPONENTS
-import PostIt from './_toolbar-component/PostIt';
-import Stickers from './_toolbar-component/stickers';
-import MainTool from './_toolbar-component/main-tool-container';
+import PostIt from './toolbar-component/PostIt';
+import Stickers from './toolbar-component/stickers';
+import MainTool from './toolbar-component/main-tool-container';
+import { Canvas } from 'fabric/fabric-impl';
 
 interface ToolbarProps {
   onSelect: React.Dispatch<React.SetStateAction<ToolValueType>>;
+  onAddRect: (canvas: Canvas) => void;
+  canvas: Canvas;
 }
 
-const Toolbar = ({ onSelect }: ToolbarProps) => {
+const Toolbar = ({ onSelect, onAddRect, canvas }: ToolbarProps) => {
   const menuConfig: MenuProps[] = [
     { name: TOOL.CLICK, icon: <PiCursorFill />, select: true },
     { name: TOOL.HAND, icon: <PiHandFill />, select: false },
@@ -54,9 +57,15 @@ const Toolbar = ({ onSelect }: ToolbarProps) => {
   };
 
   return (
-    <div className="absolute bottom-[64px] left-[50%] h-[76px] w-[984px] translate-x-[-50%] overflow-hidden">
+    <div className="fixed bottom-[64px] left-[50%] h-[76px] w-[984px] translate-x-[-50%] overflow-hidden">
       <section className="actual-ceil rounded-2 absolute bottom-0 flex h-[50px] w-full border border-gray400 bg-white">
-        <MainTool menu={menu} onClick={clickIconboxHandler} />
+        <MainTool //
+          menu={menu}
+          canvas={canvas}
+          onClick={clickIconboxHandler}
+          onAddRect={onAddRect}
+          canvas={canvas}
+        />
         <PostIt />
         <Stickers />
       </section>
