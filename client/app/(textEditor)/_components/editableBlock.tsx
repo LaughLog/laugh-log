@@ -42,8 +42,7 @@ const EditableBlock = ({
     // 블록 삭제
     if (
       e.key === 'Backspace' &&
-      ((e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
-        !(e.nativeEvent.target as HTMLInputElement)?.innerHTML)
+      (e.nativeEvent.target as HTMLInputElement)?.innerText.length - 1 <= 0
     ) {
       if (e.nativeEvent.isComposing) return;
 
