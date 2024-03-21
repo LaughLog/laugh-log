@@ -14,17 +14,6 @@ import {
 const EditablePage = ({ initialBlocks }: EditablePageProps) => {
   const [blocks, setBlocks] = useState(initialBlocks);
 
-  // 전체 block 업데이트 핸들러
-  const updatePageHandler = (updatedBlock: Block) => {
-    setBlocks(prevBlocks =>
-      prevBlocks.map(block => {
-        return block.id === updatedBlock.id
-          ? { ...block, ...updatedBlock }
-          : block;
-      })
-    );
-  };
-
   // 새로운 블록 추가 핸들러
   const addBlockHandler = (currentBlock: AddBlockHandlerProps) => {
     const newBlock = { id: uid(), html: '', tag: 'p' };
@@ -80,7 +69,6 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
         <EditableBlock
           key={block.id}
           block={block}
-          updateBlock={updatePageHandler}
           addBlock={addBlockHandler}
           deleteBlock={deleteBlockHandler}
         />

@@ -26,7 +26,6 @@ export type DeleteBlockHandlerProps = {
 
 export type EditableBlockProps = {
   block: Block;
-  updateBlock: (currentBlock: Block) => void;
   addBlock: (currentBlock: AddBlockHandlerProps) => void;
   deleteBlock: (currentBlock: DeleteBlockHandlerProps) => void;
 };

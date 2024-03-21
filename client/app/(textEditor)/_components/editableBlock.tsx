@@ -7,7 +7,6 @@ import { EditableBlockProps } from '@/types/textEditor';
 
 const EditableBlock = ({
   block,
-  updateBlock,
   addBlock,
   deleteBlock
 }: EditableBlockProps) => {
@@ -21,7 +20,7 @@ const EditableBlock = ({
   // HTML 변경 핸들러
   const onChangeHandler = (e: ContentEditableEvent) => {
     setHtml(e.target.value);
-    updateBlock({ id: block.id, html, tag });
+    //updateBlock({ id: block.id, html, tag });
   };
 
   // 키 다운 이벤트 핸들러
