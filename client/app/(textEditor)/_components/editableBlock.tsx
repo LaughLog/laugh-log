@@ -1,56 +1,62 @@
 'use client';
 
-import { useRef, useState, useEffect, KeyboardEvent } from 'react';
+import { useRef, useState, KeyboardEvent } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
-import { Block, EditableBlockProps } from '@/types/textEditor';
+import { EditableBlockProps } from '@/types/textEditor';
 
-const EditableBlock = ({ block, setBlocks, addBlock }: EditableBlockProps) => {
-  const id = block.id;
-  const initialHtml = block.html;
-  const initialTag = block.tag;
-
-  const [html, setHtml] = useState(initialHtml);
-  const [tag, setTag] = useState(initialTag);
+const EditableBlock = ({
+  block,
+  updateBlock,
+  addBlock,
+  deleteBlock
+}: EditableBlockProps) => {
+  const [html, setHtml] = useState(block.html);
+  const [tag, setTag] = useState(block.tag);
   const [previousKey, setPreviousKey] = useState('');
 
   // ContentEditable 컴포넌트에 대한 참조
   const contentEditable = useRef<HTMLInputElement>(null);
 
-  // block 조작으로 초기 HTML과 태그가 변경될 때마다 실행되는 useEffect 훅
-  useEffect(() => {
-    setHtml(initialHtml);
-    setTag(initialTag);
-  }, [initialHtml, initialTag]);
-
   // HTML 변경 핸들러
   const onChangeHandler = (e: ContentEditableEvent) => {
     setHtml(e.target.value);
-
-    setBlocks((prevBlocks: Block[]) => {
-      const index = prevBlocks.findIndex(prevBlocks => prevBlocks.id === id);
-      const updatedBlocks = [...prevBlocks];
-
-      updatedBlocks[index] = {
-        ...updatedBlocks[index],
-        html: e.target.value
-      };
-
-      return updatedBlocks;
-    });
+    updateBlock({ id: block.id, html, tag });
   };
 
-  // 키 다운 이벤트 핸들러 함수를 정의합니다.
-  const onKeyDownHandler = (e: KeyboardEvent<HTMLDivElement>) => {
-    // 엔터 키가 눌렸을 때 새로운 블록을 추가합니다.
+  // 키 다운 이벤트 핸들러
+  const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    // 새로운 블록 추가
     if (e.key === 'Enter') {
-      if (previousKey !== 'Shift') {
+      // 한글 key일 때 2번 입력되는 오류 방지
+      if (e.nativeEvent.isComposing) return;
+
+      // Shift + Enter 일 떄, block 안에서 줄 바꿈
+      if (e.shiftKey) {
+        return;
+      } else {
         e.preventDefault();
-        addBlock({ block, ref: contentEditable.current });
+        addBlock({ id: block.id, ref: contentEditable.current });
       }
     }
 
-    setPreviousKey(e.key);
+    // 블록 삭제
+    if (
+      e.key === 'Backspace' &&
+      ((e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
+        !(e.nativeEvent.target as HTMLInputElement)?.innerHTML)
+    ) {
+      if (e.nativeEvent.isComposing) return;
+
+      const previousBlock = contentEditable.current?.previousElementSibling as
+        | HTMLInputElement
+        | undefined;
+
+      // article 태그를 기준으로 가장 첫 번째 block 유지
+      if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
+        deleteBlock({ id: block.id, previousBlock });
+      }
+    }
   };
 
   return (
