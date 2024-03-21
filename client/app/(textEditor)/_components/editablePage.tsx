@@ -41,10 +41,9 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
   // 블록 삭제 핸들러
   const deleteBlockHandler = (currentBlock: DeleteBlockHandlerProps) => {
     // 해당 블록을 제외한 나머지 블록으로 상태를 업데이트합니다.
-    setBlocks(prevBlocks => {
-      const updatedBlocks = [...prevBlocks];
-      return updatedBlocks.filter(block => block.id !== currentBlock.id);
-    });
+    setBlocks(prevBlocks => [
+      ...prevBlocks.filter(block => block.id !== currentBlock.id)
+    ]);
 
     // 이전 블록으로 포커스를 이동합니다.
     setTimeout(() => currentBlock.previousBlock.focus());
