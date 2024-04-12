@@ -3,7 +3,10 @@
 import { useRef, useState, KeyboardEvent } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
+import SelectMenu from './selectMenu';
 import { EditableBlockProps } from '@/types/textEditor';
+
+const CMD_KEY = '/';
 
 const EditableBlock = ({
   block,
@@ -13,6 +16,7 @@ const EditableBlock = ({
   const [html, setHtml] = useState(block.html);
   const [tag, setTag] = useState(block.tag);
   const [previousKey, setPreviousKey] = useState('');
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   // ContentEditable 컴포넌트에 대한 참조
   const contentEditable = useRef<HTMLInputElement>(null);
@@ -56,15 +60,27 @@ const EditableBlock = ({
     }
   };
 
+  // 키 업 이벤트 핸들러
+  const onKeyUpHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+    // 명령어 입력이 끝났을 때 선택 메뉴를 엽니다.
+    if (e.key === CMD_KEY) {
+      setMenuIsOpen(true);
+    }
+  };
+
   return (
-    <ContentEditable
-      className="mx-0 my-1 rounded bg-slate-50 p-2 hover:outline-[#f5f6fb]"
-      innerRef={contentEditable}
-      html={html}
-      tagName={tag}
-      onChange={onChangeHandler}
-      onKeyDown={onKeyDownHandler}
-    />
+    <>
+      {menuIsOpen && <SelectMenu />}
+      <ContentEditable
+        className="mx-0 my-1 rounded bg-slate-50 p-2 hover:outline-[#f5f6fb]"
+        innerRef={contentEditable}
+        html={html}
+        tagName={tag}
+        onChange={onChangeHandler}
+        onKeyDown={onKeyDownHandler}
+        onKeyUp={onKeyUpHandler}
+      />
+    </>
   );
 };
 
