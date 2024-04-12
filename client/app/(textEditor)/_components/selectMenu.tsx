@@ -1,10 +1,58 @@
 'use client';
 
+import { useState } from 'react';
+
 //import { useState, useEffect } from 'react';
 //import { matchSorter } from 'match-sorter';
 
+// menu 목록
+const menuItems = [
+  {
+    id: 'page-title',
+    tag: 'h1',
+    label: '제목 1'
+  },
+  {
+    id: 'heading',
+    tag: 'h2',
+    label: '제목 2'
+  },
+  {
+    id: 'subheading',
+    tag: 'h3',
+    label: '제목 3'
+  },
+  {
+    id: 'paragraph',
+    tag: 'p',
+    label: '텍스트'
+  }
+];
+
 const SelectMenu = () => {
-  return <div>메뉴 오픈</div>;
+  const [items, setItems] = useState(menuItems);
+  const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+
+  return (
+    <div>
+      <div>
+        {items.map((item, key) => {
+          const isSelected = items.indexOf(item) === selectedItemIndex;
+
+          return (
+            <div
+              className={isSelected ? 'text-[aqua]' : undefined}
+              key={key}
+              role="button"
+              tabIndex={0}
+            >
+              {item.label}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 };
 
 export default SelectMenu;
