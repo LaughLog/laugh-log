@@ -67,18 +67,14 @@ const EditableBlock = ({
         deleteBlock({ id: block.id, previousBlock });
       }
     }
-
-    if (e.key === CMD_KEY) {
-      openMenuHandler();
-    } else setMenuIsOpen(false);
   };
 
   // 키 업 이벤트 핸들러
   const onKeyUpHandler = (e: KeyboardEvent<HTMLDivElement>) => {
-    // "/" 입력 시 메뉴 오픈"
+    // "/" 입력 시 새로운 menu open
     if (e.key === CMD_KEY) {
       openMenuHandler();
-    }
+    } else setMenuIsOpen(false);
   };
 
   // 메뉴 open 핸들러
