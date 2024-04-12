@@ -15,7 +15,6 @@ const EditableBlock = ({
 }: EditableBlockProps) => {
   const [html, setHtml] = useState(block.html);
   const [tag, setTag] = useState(block.tag);
-  const [previousKey, setPreviousKey] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   // ContentEditable 컴포넌트에 대한 참조
@@ -24,7 +23,6 @@ const EditableBlock = ({
   // HTML 변경 핸들러
   const onChangeHandler = (e: ContentEditableEvent) => {
     setHtml(e.target.value);
-    //updateBlock({ id: block.id, html, tag });
   };
 
   // 키 다운 이벤트 핸들러
