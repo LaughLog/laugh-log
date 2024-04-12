@@ -5,6 +5,9 @@ import { useState } from 'react';
 //import { useState, useEffect } from 'react';
 //import { matchSorter } from 'match-sorter';
 
+// menu 높이
+const MENU_HEIGHT = 150;
+
 // menu 목록
 const menuItems = [
   {
@@ -29,15 +32,18 @@ const menuItems = [
   }
 ];
 
-const SelectMenu = () => {
-  const [items, setItems] = useState(menuItems);
+const SelectMenu = ({
+  onSelect
+}: {
+  onSelect: (selectedTag: string) => void;
+}) => {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
   return (
     <div>
       <div>
-        {items.map((item, key) => {
-          const isSelected = items.indexOf(item) === selectedItemIndex;
+        {menuItems.map((item, key) => {
+          const isSelected = menuItems.indexOf(item) === selectedItemIndex;
 
           return (
             <div
@@ -45,6 +51,7 @@ const SelectMenu = () => {
               key={key}
               role="button"
               tabIndex={0}
+              onClick={() => onSelect(item.tag)}
             >
               {item.label}
             </div>
