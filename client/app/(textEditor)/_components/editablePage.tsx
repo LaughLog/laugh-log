@@ -40,13 +40,26 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
 
   // 블록 삭제 핸들러
   const deleteBlockHandler = (currentBlock: DeleteBlockHandlerProps) => {
-    // 해당 블록을 제외한 나머지 블록으로 상태를 업데이트합니다.
+    // 해당 블록을 제외한 blocks로 상태 업데이트
     setBlocks(prevBlocks => [
       ...prevBlocks.filter(block => block.id !== currentBlock.id)
     ]);
 
-    // 이전 블록으로 포커스를 이동합니다.
-    setTimeout(() => currentBlock.previousBlock.focus());
+    // 이전 블록의 마지막 content로 포커스 이동
+    setTimeout(() => {
+      const element = currentBlock.previousBlock;
+      const range = document.createRange();
+      const selection = window.getSelection();
+
+      selection?.removeAllRanges(); // 모든 선택 제거
+
+      range.selectNodeContents(element); // block 컨텐츠 선택
+      range.collapse(false); // 커서를 끝으로 이동
+
+      selection?.addRange(range); // 새로운 범위 적용
+
+      element.focus();
+    });
   };
 
   return blocks.map(block => (
