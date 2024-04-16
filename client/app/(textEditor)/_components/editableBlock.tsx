@@ -23,7 +23,7 @@ const EditableBlock = ({
   }>({
     x: undefined,
     y: undefined
-  }); // 선택 메뉴 위치
+  });
 
   // ContentEditable 컴포넌트에 대한 참조
   const contentEditable = useRef<HTMLInputElement>(null);
@@ -92,9 +92,19 @@ const EditableBlock = ({
     document.removeEventListener('click', closeMenuHandler);
   };
 
+  const menuSelectionHandler = (selectedTag: string) => {
+    setTag(selectedTag);
+    closeMenuHandler();
+  };
+
   return (
     <>
-      {menuIsOpen && <SelectMenu />}
+      {menuIsOpen && (
+        <SelectMenu
+          position={selectMenuPosition}
+          onSelect={menuSelectionHandler}
+        />
+      )}
       <ContentEditable
         className="mx-0 my-1 rounded bg-slate-50 p-2 hover:outline-[#f5f6fb]"
         innerRef={contentEditable}
