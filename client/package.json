@@ -23,7 +23,6 @@
     "date-fns": "^3.3.1",
     "firebase": "^10.8.0",
     "lucide-react": "^0.338.0",
-    "match-sorter": "^6.3.4",
     "next": "^13.5.6",
     "react": "^18",
     "react-contenteditable": "^3.3.7",
