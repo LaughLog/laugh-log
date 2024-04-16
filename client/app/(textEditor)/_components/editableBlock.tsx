@@ -67,6 +67,32 @@ const EditableBlock = ({
         deleteBlock({ id: block.id, previousBlock });
       }
     }
+
+    // 블록 이동
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+
+      const currentBlock = contentEditable.current;
+      const previousBlock = currentBlock?.previousElementSibling as
+        | HTMLInputElement
+        | undefined;
+
+      // 이전 블록이 존재하고, article 태그가 아닌 경우에만 이동
+      if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
+        const range = document.createRange();
+        const selection = window.getSelection();
+
+        // 기존 Selection의 range 삭제
+        selection?.removeAllRanges();
+
+        // 새로운 Range 객체에 대한 커서 이동 후 새로운 range 추가
+        range.selectNodeContents(previousBlock);
+        range.collapse(false);
+        selection?.addRange(range);
+
+        previousBlock.focus();
+      }
+    }
   };
 
   // 키 업 이벤트 핸들러
