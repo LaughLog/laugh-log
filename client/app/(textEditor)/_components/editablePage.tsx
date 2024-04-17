@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { uid } from '@/lib/utils';
+import { setCaretToEnd, uid } from '@/lib/utils';
 import EditableBlock from './editableBlock';
 import {
   EditablePageProps,
@@ -47,18 +47,7 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
 
     // 이전 블록의 마지막 content로 포커스 이동
     setTimeout(() => {
-      const element = currentBlock.previousBlock;
-      const range = document.createRange();
-      const selection = window.getSelection();
-
-      selection?.removeAllRanges(); // 모든 선택 제거
-
-      range.selectNodeContents(element); // block 컨텐츠 선택
-      range.collapse(false); // 커서를 끝으로 이동
-
-      selection?.addRange(range); // 새로운 범위 적용
-
-      element.focus();
+      setCaretToEnd(currentBlock.previousBlock);
     });
   };
 
