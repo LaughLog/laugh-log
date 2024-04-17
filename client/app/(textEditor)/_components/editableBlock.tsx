@@ -5,7 +5,7 @@ import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
 import SelectMenu from './selectMenu';
 import { EditableBlockProps } from '@/types/textEditor';
-import { getCaretCoordinates } from '@/lib/utils';
+import { setCaretToEnd } from '@/lib/utils';
 
 const CMD_KEY = '/';
 
@@ -17,13 +17,6 @@ const EditableBlock = ({
   const [html, setHtml] = useState(block.html);
   const [tag, setTag] = useState(block.tag);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [selectMenuPosition, setMenuPosition] = useState<{
-    x: number | undefined;
-    y: number | undefined;
-  }>({
-    x: undefined,
-    y: undefined
-  });
 
   // ContentEditable 컴포넌트에 대한 참조
   const contentEditable = useRef<HTMLInputElement>(null);
@@ -79,18 +72,7 @@ const EditableBlock = ({
 
       // 이전 블록이 존재하고, article 태그가 아닌 경우에만 이동
       if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
-        const range = document.createRange();
-        const selection = window.getSelection();
-
-        // 기존 Selection의 range 삭제
-        selection?.removeAllRanges();
-
-        // 새로운 Range 객체에 대한 커서 위로 이동 후 새로운 range 추가
-        range.selectNodeContents(previousBlock);
-        range.collapse(false);
-        selection?.addRange(range);
-
-        previousBlock.focus();
+        setCaretToEnd(previousBlock);
       }
     }
 
@@ -103,18 +85,7 @@ const EditableBlock = ({
         | undefined;
 
       if (nextBlock) {
-        const range = document.createRange();
-        const selection = window.getSelection();
-
-        // 기존 Selection의 range 삭제
-        selection?.removeAllRanges();
-
-        // 새로운 Range 객체에 대한 커서 아래로 이동 후 새로운 range 추가
-        range.selectNodeContents(nextBlock);
-        range.collapse(false);
-        selection?.addRange(range);
-
-        nextBlock.focus();
+        setCaretToEnd(nextBlock);
       }
     }
   };
@@ -124,22 +95,26 @@ const EditableBlock = ({
     // "/" 입력 시 새로운 menu open
     if (e.key === CMD_KEY) {
       openMenuHandler();
-    } else setMenuIsOpen(false);
+    }
   };
 
   // 메뉴 open 핸들러
   const openMenuHandler = () => {
-    const { x, y } = getCaretCoordinates();
-    setMenuPosition({ x, y });
     setMenuIsOpen(true);
     document.addEventListener('click', closeMenuHandler);
+    contentEditable.current?.blur();
   };
 
   // 메뉴 close 핸들러
   const closeMenuHandler = () => {
-    setMenuPosition({ x: undefined, y: undefined });
-    setMenuIsOpen(false);
     document.removeEventListener('click', closeMenuHandler);
+
+    setTimeout(() => {
+      if (contentEditable.current) {
+        setCaretToEnd(contentEditable.current);
+        setMenuIsOpen(false);
+      }
+    });
   };
 
   const menuSelectionHandler = (selectedTag: string) => {
@@ -151,8 +126,9 @@ const EditableBlock = ({
     <>
       {menuIsOpen && (
         <SelectMenu
-          position={selectMenuPosition}
+          setHtml={setHtml}
           onSelect={menuSelectionHandler}
+          onClose={closeMenuHandler}
         />
       )}
       <ContentEditable
