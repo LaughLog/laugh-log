@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, KeyboardEvent } from 'react';
+import { useRef, useState, KeyboardEvent, startTransition } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
 import SelectMenu from './selectMenu';
@@ -12,7 +12,8 @@ const CMD_KEY = '/';
 const EditableBlock = ({
   block,
   addBlock,
-  deleteBlock
+  deleteBlock,
+  setBlocks
 }: EditableBlockProps) => {
   const [html, setHtml] = useState(block.html);
   const [tag, setTag] = useState(block.tag);
@@ -24,6 +25,26 @@ const EditableBlock = ({
   // HTML 변경 핸들러
   const onChangeHandler = (e: ContentEditableEvent) => {
     setHtml(e.target.value);
+    startTransition(() => {
+      setBlocks(prevBlocks => {
+        const updatedBlocks = [...prevBlocks];
+        let index = -1;
+
+        // 해당 블록의 인덱스를 찾을 때까지 반복
+        while (index === -1) {
+          index = updatedBlocks.findIndex(
+            block => block.id === contentEditable.current?.id
+          );
+        }
+
+        updatedBlocks[index] = {
+          ...updatedBlocks[index],
+          html: e.target.value
+        };
+
+        return updatedBlocks;
+      });
+    });
   };
 
   // 키 다운 이벤트 핸들러

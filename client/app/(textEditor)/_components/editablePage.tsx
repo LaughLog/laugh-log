@@ -52,6 +52,7 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
       block={block}
       addBlock={addBlockHandler}
       deleteBlock={deleteBlockHandler}
+      setBlocks={setBlocks}
     />
   ));
 };
