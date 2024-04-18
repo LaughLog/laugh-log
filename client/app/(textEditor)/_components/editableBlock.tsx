@@ -5,7 +5,7 @@ import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
 import SelectMenu from './selectMenu';
 import { EditableBlockProps } from '@/types/textEditor';
-import { setCaretToEnd } from '@/lib/utils';
+import { setCaretTo } from '@/lib/utils';
 
 const CMD_KEY = '/';
 
@@ -55,18 +55,50 @@ const EditableBlock = ({
     }
 
     // 블록 삭제
-    if (
-      e.key === 'Backspace' &&
-      ((e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
-        !(e.nativeEvent.target as HTMLInputElement)?.innerHTML)
-    ) {
-      const previousBlock = contentEditable.current?.previousElementSibling as
-        | HTMLInputElement
-        | undefined;
+    if (e.key === 'Backspace') {
+      if (window.getSelection()?.anchorOffset === 0) {
+        const element = contentEditable.current;
+        const content = element?.innerHTML;
+        const previousBlock = element?.previousElementSibling as
+          | HTMLInputElement
+          | undefined;
 
-      // article 태그를 기준으로 가장 첫 번째 block 유지
-      if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
-        deleteBlock({ id: block.id, previousBlock });
+        if (
+          previousBlock !== undefined &&
+          previousBlock.tagName !== 'ARTICLE'
+        ) {
+          deleteBlock({ id: block.id, previousBlock });
+          setTimeout(() => {
+            // 이전 블록의 마지막 커서 위치 기억
+            const offset = previousBlock.innerHTML.length;
+
+            setHtml((previousBlock.innerHTML += content));
+
+            // 이전 블록의 마지막 커서 위치로 focus
+            if (offset) {
+              const range = document.createRange();
+              const selection = window.getSelection();
+
+              selection?.removeAllRanges();
+              range.setStart(previousBlock.firstChild!, offset);
+              range.setEnd(previousBlock.firstChild!, offset);
+              selection?.addRange(range);
+            } else setCaretTo('start', previousBlock);
+          });
+        }
+      }
+
+      if (
+        (e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
+        !(e.nativeEvent.target as HTMLInputElement)?.innerHTML
+      ) {
+        const previousBlock = contentEditable.current
+          ?.previousElementSibling as HTMLInputElement | undefined;
+
+        // article 태그를 기준으로 가장 첫 번째 block 유지
+        if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
+          deleteBlock({ id: block.id, previousBlock });
+        }
       }
     }
 
@@ -81,7 +113,7 @@ const EditableBlock = ({
 
       // 이전 블록이 존재하고, article 태그가 아닌 경우에만 이동
       if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
-        setCaretToEnd(previousBlock);
+        setCaretTo('end', previousBlock);
       }
     }
 
@@ -94,7 +126,7 @@ const EditableBlock = ({
         | undefined;
 
       if (nextBlock) {
-        setCaretToEnd(nextBlock);
+        setCaretTo('end', nextBlock);
       }
     }
   };
@@ -120,7 +152,7 @@ const EditableBlock = ({
 
     setTimeout(() => {
       if (contentEditable.current) {
-        setCaretToEnd(contentEditable.current);
+        setCaretTo('end', contentEditable.current);
         setIsMenuOpen(false);
       }
     });
@@ -141,6 +173,7 @@ const EditableBlock = ({
         />
       )}
       <ContentEditable
+        id={block.id}
         className="mx-0 my-1 rounded bg-slate-50 p-2 hover:outline-[#f5f6fb]"
         innerRef={contentEditable}
         html={html}
