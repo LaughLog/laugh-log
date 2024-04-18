@@ -16,7 +16,7 @@ const EditableBlock = ({
 }: EditableBlockProps) => {
   const [html, setHtml] = useState(block.html);
   const [tag, setTag] = useState(block.tag);
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // ContentEditable 컴포넌트에 대한 참조
   const contentEditable = useRef<HTMLInputElement>(null);
@@ -34,7 +34,7 @@ const EditableBlock = ({
     // 새로운 블록 추가
     if (e.key === 'Enter') {
       // 새로운 박스 생성 전 menu close
-      setMenuIsOpen(false);
+      setIsMenuOpen(false);
 
       // Shift + Enter 일 떄, block 안에서 줄 바꿈
       if (e.shiftKey) {
@@ -100,7 +100,7 @@ const EditableBlock = ({
 
   // 메뉴 open 핸들러
   const openMenuHandler = () => {
-    setMenuIsOpen(true);
+    setIsMenuOpen(true);
     document.addEventListener('click', closeMenuHandler);
     contentEditable.current?.blur();
   };
@@ -112,7 +112,7 @@ const EditableBlock = ({
     setTimeout(() => {
       if (contentEditable.current) {
         setCaretToEnd(contentEditable.current);
-        setMenuIsOpen(false);
+        setIsMenuOpen(false);
       }
     });
   };
@@ -124,7 +124,7 @@ const EditableBlock = ({
 
   return (
     <>
-      {menuIsOpen && (
+      {isMenuOpen && (
         <SelectMenu
           setHtml={setHtml}
           onSelect={menuSelectionHandler}
