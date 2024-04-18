@@ -50,7 +50,7 @@ const SelectMenu = ({
     top: number | undefined;
     left: number | undefined;
   }>({ top: y! - MENU_HEIGHT, left: x });
-  const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+  const [itemIndex, setItemIndex] = useState(0);
 
   const handleKeyDown = useCallback(
     (e: globalThis.KeyboardEvent) => {
@@ -59,25 +59,21 @@ const SelectMenu = ({
       if (e.key === 'Enter') {
         e.preventDefault();
         onClose();
-        onSelect(menuItems[selectedItemIndex].tag);
+        onSelect(menuItems[itemIndex].tag);
       }
 
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         const prevSelected =
-          selectedItemIndex === 0
-            ? menuItems.length - 1
-            : selectedItemIndex - 1;
-        setSelectedItemIndex(prevSelected);
+          itemIndex === 0 ? menuItems.length - 1 : itemIndex - 1;
+        setItemIndex(prevSelected);
       }
 
       if (e.key === 'ArrowDown' || e.key === 'Tab') {
         e.preventDefault();
         const nextSelected =
-          selectedItemIndex === menuItems.length - 1
-            ? 0
-            : selectedItemIndex + 1;
-        setSelectedItemIndex(nextSelected);
+          itemIndex === menuItems.length - 1 ? 0 : itemIndex + 1;
+        setItemIndex(nextSelected);
       }
 
       if (e.key === '/') {
@@ -95,7 +91,7 @@ const SelectMenu = ({
         onClose();
       }
     },
-    [onClose, onSelect, selectedItemIndex, setHtml]
+    [onClose, onSelect, itemIndex, setHtml]
   );
 
   useEffect(() => {
@@ -110,7 +106,7 @@ const SelectMenu = ({
     <div className="select-menu" style={menuStyle}>
       <div className="items">
         {menuItems.map((item, key) => {
-          const isSelected = menuItems.indexOf(item) === selectedItemIndex;
+          const isSelected = menuItems.indexOf(item) === itemIndex;
 
           return (
             <div
