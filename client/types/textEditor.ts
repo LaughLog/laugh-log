@@ -13,6 +13,7 @@ export type EditablePageProps = {
 export type AddBlockHandlerProps = {
   id: string;
   ref: HTMLInputElement | null;
+  newHtml: string;
 };
 
 export type DeleteBlockHandlerProps = {

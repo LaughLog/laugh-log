@@ -15,7 +15,7 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
 
   // 새로운 블록 추가 핸들러
   const addBlockHandler = (currentBlock: AddBlockHandlerProps) => {
-    const newBlock = { id: uid(), html: '', tag: 'p' };
+    const newBlock = { id: uid(), html: currentBlock.newHtml, tag: 'p' };
 
     // 이전 블록 배열에 새로운 블록을 추가한 후 상태 업데이트
     setBlocks(prevBlocks => {

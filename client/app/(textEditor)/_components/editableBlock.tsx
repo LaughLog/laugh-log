@@ -41,7 +41,16 @@ const EditableBlock = ({
         return;
       } else {
         e.preventDefault();
-        addBlock({ id: block.id, ref: contentEditable.current });
+        const element = contentEditable.current;
+        const content = element?.innerHTML;
+        const anchorIndex = window.getSelection()?.anchorOffset;
+        const previousHtml = content?.substring(0, anchorIndex);
+        const newHtml = content?.substring(anchorIndex!);
+
+        if (previousHtml !== undefined && newHtml !== undefined) {
+          setHtml(previousHtml);
+          addBlock({ id: block.id, ref: element, newHtml });
+        }
       }
     }
 
