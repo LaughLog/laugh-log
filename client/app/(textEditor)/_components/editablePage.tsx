@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { setCaretToEnd, uid } from '@/lib/utils';
+import { uid } from '@/lib/utils';
 import EditableBlock from './editableBlock';
 import {
   EditablePageProps,
@@ -41,13 +41,8 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
   // 블록 삭제 핸들러
   const deleteBlockHandler = (currentBlock: DeleteBlockHandlerProps) => {
     // 해당 블록을 제외한 blocks로 상태 업데이트
-    setBlocks(prevBlocks => [
-      ...prevBlocks.filter(block => block.id !== currentBlock.id)
-    ]);
-
-    // 이전 블록의 마지막 content로 포커스 이동
-    setTimeout(() => {
-      setCaretToEnd(currentBlock.previousBlock);
+    setBlocks(prevBlocks => {
+      return [...prevBlocks.filter(block => block.id !== currentBlock.id)];
     });
   };
 
