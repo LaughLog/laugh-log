@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { doc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { doc, setDoc } from 'firebase/firestore';
 
 import EditableBlock from './editableBlock';
 import useGetBlocks from '@/hook/queries/useGetBlocks';
@@ -12,14 +12,25 @@ import {
   DeleteBlockHandlerProps,
   Block
 } from '@/types/textEditor';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const EditablePage = ({ children }: { children: React.ReactNode }) => {
+  // Read Server Blocks
   const boardId = 'test1'; // 향후 query string으로 대체
   const textEditorRef = doc(db, 'text-editor', boardId);
   const { data } = useGetBlocks(textEditorRef);
-  const initialBlocks: Block[] = data.data()?.initialBlocks;
-
+  const initialBlocks: Block[] = data.data()?.blocks;
   const [blocks, setBlocks] = useState(initialBlocks);
+
+  // Update Server Blocks
+  const queryClient = useQueryClient();
+  const { mutateAsync: updateServerBlocks } = useMutation({
+    mutationFn: () => setDoc(doc(db, 'text-editor', boardId), { blocks }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['textEditorBlocks'] });
+    }
+  });
+  const [timer, setTimer] = useState<null | NodeJS.Timeout>(null);
 
   // 새로운 블록 추가 핸들러
   const addBlockHandler = (currentBlock: AddBlockHandlerProps) => {
@@ -53,6 +64,23 @@ const EditablePage = ({ children }: { children: React.ReactNode }) => {
       return [...prevBlocks.filter(block => block.id !== currentBlock.id)];
     });
   };
+
+  // 자동 저장
+  const autoUpdateServerBlocks = () => {
+    setTimer(
+      setTimeout(async () => {
+        await updateServerBlocks();
+      }, 2000)
+    );
+  };
+
+  // 디바운싱을 활용하여 한번만 서버 Update
+  useEffect(() => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    autoUpdateServerBlocks();
+  }, [blocks]);
 
   return (
     <>
