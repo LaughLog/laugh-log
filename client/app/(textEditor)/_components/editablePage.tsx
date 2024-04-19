@@ -23,14 +23,27 @@ const EditablePage = ({ children }: { children: React.ReactNode }) => {
   const [blocks, setBlocks] = useState(initialBlocks);
 
   // Update Server Blocks
-  const queryClient = useQueryClient();
-  const { mutateAsync: updateServerBlocks } = useMutation({
-    mutationFn: () => setDoc(doc(db, 'text-editor', boardId), { blocks }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['textEditorBlocks'] });
-    }
-  });
+  // useMutation과 디바운싱을 활용한 서버 상태 업데이트 비용 감소 ~
   const [timer, setTimer] = useState<null | NodeJS.Timeout>(null);
+  const { mutateAsync: updateServerBlocks } = useMutation({
+    mutationFn: () => setDoc(doc(db, 'text-editor', boardId), { blocks })
+  });
+
+  useEffect(() => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    autoUpdateServerBlocks();
+  }, [blocks]);
+
+  const autoUpdateServerBlocks = () => {
+    setTimer(
+      setTimeout(async () => {
+        await updateServerBlocks();
+      }, 2000)
+    );
+  };
+  // ~ 비용 감소
 
   // 새로운 블록 추가 핸들러
   const addBlockHandler = (currentBlock: AddBlockHandlerProps) => {
@@ -64,23 +77,6 @@ const EditablePage = ({ children }: { children: React.ReactNode }) => {
       return [...prevBlocks.filter(block => block.id !== currentBlock.id)];
     });
   };
-
-  // 자동 저장
-  const autoUpdateServerBlocks = () => {
-    setTimer(
-      setTimeout(async () => {
-        await updateServerBlocks();
-      }, 2000)
-    );
-  };
-
-  // 디바운싱을 활용하여 한번만 서버 Update
-  useEffect(() => {
-    if (timer) {
-      clearTimeout(timer);
-    }
-    autoUpdateServerBlocks();
-  }, [blocks]);
 
   return (
     <>
