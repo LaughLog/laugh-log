@@ -1,9 +1,9 @@
-import EditablePage from '../../_components/editablePage';
+import InitialBlocks from '../../_components/initialBlocks';
 
-const TextEditor = () => {
+const TextEditor = async () => {
   return (
     <section className="mx-auto my-0 w-2/3">
-      <EditablePage>
+      <InitialBlocks>
         <article className="mx-0 my-8 border-l-4 border-solid border-l-[#0f2e53] py-1 pl-2 pr-4">
           <h1 role="img" aria-label="greetings" className="pr-2">
             Hallo! 👋
@@ -15,7 +15,7 @@ const TextEditor = () => {
             향후 추가될 예정입니다.
           </p>
         </article>
-      </EditablePage>
+      </InitialBlocks>
     </section>
   );
 };

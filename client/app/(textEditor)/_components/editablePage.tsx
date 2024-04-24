@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
+import { startTransition, useEffect, useState } from 'react';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 
 import EditableBlock from './editableBlock';
-import useGetBlocks from '@/hook/queries/useGetBlocks';
 import { db } from '@/firebase/app';
 import { uid } from '@/lib/utils';
 import {
@@ -13,36 +12,32 @@ import {
   Block
 } from '@/types/textEditor';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { start } from 'repl';
 
-const EditablePage = ({ children }: { children: React.ReactNode }) => {
-  // Read Server Blocks
-  const boardId = 'test1'; // 향후 query string으로 대체
-  const textEditorRef = doc(db, 'text-editor', boardId);
-  const { data } = useGetBlocks(textEditorRef);
-  const initialBlocks: Block[] = data.data()?.blocks;
+const EditablePage = ({
+  initialBlocks,
+  boardId
+}: {
+  initialBlocks: Block[];
+  boardId: string;
+}) => {
   const [blocks, setBlocks] = useState(initialBlocks);
 
   // Update Server Blocks
   // useMutation과 디바운싱을 활용한 서버 상태 업데이트 비용 감소 ~
   const [timer, setTimer] = useState<null | NodeJS.Timeout>(null);
-  const { mutateAsync: updateServerBlocks } = useMutation({
-    mutationFn: () => setDoc(doc(db, 'text-editor', boardId), { blocks })
+  const { mutate: updateServerBlocks } = useMutation({
+    mutationFn: (updatedBlocks: Block[]) =>
+      updateDoc(doc(db, 'text-editor', boardId), { updatedBlocks })
   });
 
   useEffect(() => {
     if (timer) {
       clearTimeout(timer);
     }
-    autoUpdateServerBlocks();
-  }, [blocks]);
 
-  const autoUpdateServerBlocks = () => {
-    setTimer(
-      setTimeout(async () => {
-        await updateServerBlocks();
-      }, 2000)
-    );
-  };
+    setTimer(setTimeout(() => updateServerBlocks(blocks), 200));
+  }, [blocks]);
   // ~ 비용 감소
 
   // 새로운 블록 추가 핸들러
@@ -60,6 +55,7 @@ const EditablePage = ({ children }: { children: React.ReactNode }) => {
       }
 
       updatedBlocks.splice(index + 1, 0, newBlock);
+      updatedBlocks[index].html = currentBlock.previousHtml;
 
       return updatedBlocks;
     });
@@ -71,16 +67,32 @@ const EditablePage = ({ children }: { children: React.ReactNode }) => {
   };
 
   // 블록 삭제 핸들러
-  const deleteBlockHandler = (currentBlock: DeleteBlockHandlerProps) => {
+  const deleteBlockHandler = async (currentBlock: DeleteBlockHandlerProps) => {
     // 해당 블록을 제외한 blocks로 상태 업데이트
     setBlocks(prevBlocks => {
-      return [...prevBlocks.filter(block => block.id !== currentBlock.id)];
+      const updatedBlocks = [
+        ...prevBlocks.filter(block => block.id !== currentBlock.id)
+      ];
+      let index = -1;
+
+      // 해당 블록의 인덱스를 찾을 때까지 반복
+      while (index === -1) {
+        index = updatedBlocks.findIndex(
+          block => block.id === currentBlock.previousBlock.id
+        );
+      }
+
+      updatedBlocks[index] = {
+        ...updatedBlocks[index],
+        html: updatedBlocks[index].html + currentBlock.content
+      };
+
+      return updatedBlocks;
     });
   };
 
   return (
     <>
-      {children}
       {blocks.map(block => (
         <EditableBlock
           key={block.id}
