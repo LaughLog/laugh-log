@@ -1,7 +1,7 @@
 'use client';
 
-import { startTransition, useEffect, useState } from 'react';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
 
 import EditableBlock from './editableBlock';
 import { db } from '@/firebase/app';
@@ -11,8 +11,7 @@ import {
   DeleteBlockHandlerProps,
   Block
 } from '@/types/textEditor';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { start } from 'repl';
+import { useMutation } from '@tanstack/react-query';
 
 const EditablePage = ({
   initialBlocks,
