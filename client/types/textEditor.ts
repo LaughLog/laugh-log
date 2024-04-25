@@ -15,11 +15,14 @@ export type EditablePageProps = {
 export type AddBlockHandlerProps = {
   id: string;
   ref: HTMLInputElement | null;
+  previousHtml: string;
+  newHtml: string;
 };
 
 export type DeleteBlockHandlerProps = {
   id: string;
   previousBlock: HTMLInputElement;
+  content: string;
 };
 
 // EditableBlock
@@ -28,4 +31,5 @@ export type EditableBlockProps = {
   block: Block;
   addBlock: (currentBlock: AddBlockHandlerProps) => void;
   deleteBlock: (currentBlock: DeleteBlockHandlerProps) => void;
+  setBlocks: Dispatch<SetStateAction<Block[]>>;
 };

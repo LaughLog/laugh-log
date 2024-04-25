@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* reset CSS 설정 */
+/* reset CSS, text-editor CSS */
 @layer base {
+  /* reset CSS */
   * {
     margin: 0;
     padding: 0;
@@ -61,7 +62,39 @@
     border: 0;
     cursor: pointer;
   }
+
+  /* text-editor CSS */
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: 0.125rem;
+  }
+
+  h4 {
+    font-size: 1.125rem;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  p {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 0.125rem;
+  }
+
   a {
+    color: inherit;
     text-decoration: none;
   }
 }
@@ -137,6 +170,59 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+/* select-menu */
+@layer components {
+  .select-menu {
+    position: absolute;
+    width: 6.875rem;
+    height: 9rem;
+    z-index: 11;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .select-menu .items {
+    background: #fafafa;
+    box-shadow:
+      rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
+      rgba(15, 15, 15, 0.1) 0px 3px 6px,
+      rgba(15, 15, 15, 0.2) 0px 9px 24px;
+    border-radius: 0.5rem;
+  }
+  .select-menu .items div[role='button'] {
+    font-size: 0.875rem;
+    font-weight: 400;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid f5f6fb;
+  }
+  .select-menu .items div[role='button']:hover {
+    background: #f5f6fb;
+    cursor: pointer;
+  }
+  .select-menu .items div[role='button']:last-of-type {
+    border-bottom: none;
+  }
+  .select-menu .items div[role='button']:hover,
+  .select-menu .items div[role='button']:focus {
+    background: #f5f6fb;
+    cursor: pointer;
+  }
+  .select-menu .items div[role='button']:first-of-type:hover,
+  .select-menu .items div[role='button']:first-of-type:focus {
+    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0.5rem;
+  }
+  .select-menu .items div[role='button']:last-of-type:hover,
+  .select-menu .items div[role='button']:last-of-type:focus {
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+  }
+  .selected {
+    background: #f5f6fb;
+    border-radius: 0.5rem;
   }
 }
 

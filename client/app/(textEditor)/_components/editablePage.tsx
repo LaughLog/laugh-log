@@ -1,21 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
 
-import { uid } from '@/lib/utils';
 import EditableBlock from './editableBlock';
+import { db } from '@/firebase/app';
+import { uid } from '@/lib/utils';
 import {
-  EditablePageProps,
   AddBlockHandlerProps,
-  DeleteBlockHandlerProps
+  DeleteBlockHandlerProps,
+  Block
 } from '@/types/textEditor';
+import { useMutation } from '@tanstack/react-query';
 
-const EditablePage = ({ initialBlocks }: EditablePageProps) => {
+const EditablePage = ({
+  initialBlocks,
+  boardId
+}: {
+  initialBlocks: Block[];
+  boardId: string;
+}) => {
   const [blocks, setBlocks] = useState(initialBlocks);
+
+  // Update Server Blocks
+  // useMutation과 디바운싱을 활용한 서버 상태 업데이트 비용 감소 ~
+  const [timer, setTimer] = useState<null | NodeJS.Timeout>(null);
+  const { mutate: updateServerBlocks } = useMutation({
+    mutationFn: (updatedBlocks: Block[]) =>
+      updateDoc(doc(db, 'text-editor', boardId), { updatedBlocks })
+  });
+
+  useEffect(() => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    setTimer(setTimeout(() => updateServerBlocks(blocks), 200));
+  }, [blocks]);
+  // ~ 비용 감소
 
   // 새로운 블록 추가 핸들러
   const addBlockHandler = (currentBlock: AddBlockHandlerProps) => {
-    const newBlock = { id: uid(), html: '', tag: 'p' };
+    const newBlock = { id: uid(), html: currentBlock.newHtml, tag: 'p' };
 
     // 이전 블록 배열에 새로운 블록을 추가한 후 상태 업데이트
     setBlocks(prevBlocks => {
@@ -28,6 +54,7 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
       }
 
       updatedBlocks.splice(index + 1, 0, newBlock);
+      updatedBlocks[index].html = currentBlock.previousHtml;
 
       return updatedBlocks;
     });
@@ -39,36 +66,39 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
   };
 
   // 블록 삭제 핸들러
-  const deleteBlockHandler = (currentBlock: DeleteBlockHandlerProps) => {
-    // 해당 블록을 제외한 나머지 블록으로 상태를 업데이트합니다.
-    setBlocks(prevBlocks => [
-      ...prevBlocks.filter(block => block.id !== currentBlock.id)
-    ]);
+  const deleteBlockHandler = async (currentBlock: DeleteBlockHandlerProps) => {
+    // 해당 블록을 제외한 blocks로 상태 업데이트
+    setBlocks(prevBlocks => {
+      const updatedBlocks = [
+        ...prevBlocks.filter(block => block.id !== currentBlock.id)
+      ];
+      let index = -1;
 
-    // 이전 블록으로 포커스를 이동합니다.
-    setTimeout(() => currentBlock.previousBlock.focus());
+      // 해당 블록의 인덱스를 찾을 때까지 반복
+      while (index === -1) {
+        index = updatedBlocks.findIndex(
+          block => block.id === currentBlock.previousBlock.id
+        );
+      }
+
+      updatedBlocks[index] = {
+        ...updatedBlocks[index],
+        html: updatedBlocks[index].html + currentBlock.content
+      };
+
+      return updatedBlocks;
+    });
   };
 
   return (
     <>
-      <article className="mx-0 my-8 border-l-4 border-solid border-l-[#0f2e53] py-1 pl-2 pr-4">
-        <h1 role="img" aria-label="greetings" className="pr-2">
-          Hallo! 👋
-        </h1>
-        <p>
-          <span className="rounded-s bg-orange-200 p-0.5">Enter</span> 키를 통해
-          새로운 블록을 생성해 보세요.{' '}
-          <span className="rounded-sm bg-orange-200 p-0.5">/</span> 기능은 향후
-          추가될 예정입니다.
-        </p>
-      </article>
-
       {blocks.map(block => (
         <EditableBlock
           key={block.id}
           block={block}
           addBlock={addBlockHandler}
           deleteBlock={deleteBlockHandler}
+          setBlocks={setBlocks}
         />
       ))}
     </>
