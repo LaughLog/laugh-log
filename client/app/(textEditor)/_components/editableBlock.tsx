@@ -25,25 +25,24 @@ const EditableBlock = ({
   // HTML 변경 핸들러
   const onChangeHandler = (e: ContentEditableEvent) => {
     setHtml(e.target.value);
-    startTransition(() => {
-      setBlocks(prevBlocks => {
-        const updatedBlocks = [...prevBlocks];
-        let index = -1;
 
-        // 해당 블록의 인덱스를 찾을 때까지 반복
-        while (index === -1) {
-          index = updatedBlocks.findIndex(
-            block => block.id === contentEditable.current?.id
-          );
-        }
+    setBlocks(prevBlocks => {
+      const updatedBlocks = [...prevBlocks];
+      let index = -1;
 
-        updatedBlocks[index] = {
-          ...updatedBlocks[index],
-          html: e.target.value
-        };
+      // 해당 블록의 인덱스를 찾을 때까지 반복
+      while (index === -1) {
+        index = updatedBlocks.findIndex(
+          block => block.id === contentEditable.current?.id
+        );
+      }
 
-        return updatedBlocks;
-      });
+      updatedBlocks[index] = {
+        ...updatedBlocks[index],
+        html: e.target.value
+      };
+
+      return updatedBlocks;
     });
   };
 
@@ -70,7 +69,7 @@ const EditableBlock = ({
 
         if (previousHtml !== undefined && newHtml !== undefined) {
           setHtml(previousHtml);
-          addBlock({ id: block.id, ref: element, newHtml });
+          addBlock({ id: block.id, ref: element, previousHtml, newHtml });
         }
       }
     }
@@ -88,7 +87,8 @@ const EditableBlock = ({
           previousBlock !== undefined &&
           previousBlock.tagName !== 'ARTICLE'
         ) {
-          deleteBlock({ id: block.id, previousBlock });
+          if (content) deleteBlock({ id: block.id, previousBlock, content });
+
           setTimeout(() => {
             // 이전 블록의 마지막 커서 위치 기억
             const offset = previousBlock.innerHTML.length;
@@ -104,8 +104,10 @@ const EditableBlock = ({
               range.setStart(previousBlock.firstChild!, offset);
               range.setEnd(previousBlock.firstChild!, offset);
               selection?.addRange(range);
-            } else setCaretTo('start', previousBlock);
-          });
+            } else {
+              setCaretTo('start', previousBlock);
+            }
+          }, 350);
         }
       }
 
@@ -118,7 +120,7 @@ const EditableBlock = ({
 
         // article 태그를 기준으로 가장 첫 번째 block 유지
         if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
-          deleteBlock({ id: block.id, previousBlock });
+          deleteBlock({ id: block.id, previousBlock, content: '' });
         }
       }
     }
