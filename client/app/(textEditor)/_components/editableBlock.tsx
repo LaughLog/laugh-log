@@ -3,7 +3,11 @@
 import { useRef, useState, KeyboardEvent } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
+import SelectMenu from './selectMenu';
 import { EditableBlockProps } from '@/types/textEditor';
+import { getCaretCoordinates } from '@/lib/utils';
+
+const CMD_KEY = '/';
 
 const EditableBlock = ({
   block,
@@ -12,7 +16,14 @@ const EditableBlock = ({
 }: EditableBlockProps) => {
   const [html, setHtml] = useState(block.html);
   const [tag, setTag] = useState(block.tag);
-  const [previousKey, setPreviousKey] = useState('');
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [selectMenuPosition, setMenuPosition] = useState<{
+    x: number | undefined;
+    y: number | undefined;
+  }>({
+    x: undefined,
+    y: undefined
+  });
 
   // ContentEditable 컴포넌트에 대한 참조
   const contentEditable = useRef<HTMLInputElement>(null);
@@ -20,7 +31,6 @@ const EditableBlock = ({
   // HTML 변경 핸들러
   const onChangeHandler = (e: ContentEditableEvent) => {
     setHtml(e.target.value);
-    //updateBlock({ id: block.id, html, tag });
   };
 
   // 키 다운 이벤트 핸들러
@@ -29,6 +39,9 @@ const EditableBlock = ({
     if (e.key === 'Enter') {
       // 한글 key일 때 2번 입력되는 오류 방지
       if (e.nativeEvent.isComposing) return;
+
+      // 새로운 박스 생성 전 menu close
+      setMenuIsOpen(false);
 
       // Shift + Enter 일 떄, block 안에서 줄 바꿈
       if (e.shiftKey) {
@@ -56,15 +69,52 @@ const EditableBlock = ({
     }
   };
 
+  // 키 업 이벤트 핸들러
+  const onKeyUpHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+    // "/" 입력 시 새로운 menu open
+    if (e.key === CMD_KEY) {
+      openMenuHandler();
+    } else setMenuIsOpen(false);
+  };
+
+  // 메뉴 open 핸들러
+  const openMenuHandler = () => {
+    const { x, y } = getCaretCoordinates();
+    setMenuPosition({ x, y });
+    setMenuIsOpen(true);
+    document.addEventListener('click', closeMenuHandler);
+  };
+
+  // 메뉴 close 핸들러
+  const closeMenuHandler = () => {
+    setMenuPosition({ x: undefined, y: undefined });
+    setMenuIsOpen(false);
+    document.removeEventListener('click', closeMenuHandler);
+  };
+
+  const menuSelectionHandler = (selectedTag: string) => {
+    setTag(selectedTag);
+    closeMenuHandler();
+  };
+
   return (
-    <ContentEditable
-      className="mx-0 my-1 rounded bg-slate-50 p-2 hover:outline-[#f5f6fb]"
-      innerRef={contentEditable}
-      html={html}
-      tagName={tag}
-      onChange={onChangeHandler}
-      onKeyDown={onKeyDownHandler}
-    />
+    <>
+      {menuIsOpen && (
+        <SelectMenu
+          position={selectMenuPosition}
+          onSelect={menuSelectionHandler}
+        />
+      )}
+      <ContentEditable
+        className="mx-0 my-1 rounded bg-slate-50 p-2 hover:outline-[#f5f6fb]"
+        innerRef={contentEditable}
+        html={html}
+        tagName={tag}
+        onChange={onChangeHandler}
+        onKeyDown={onKeyDownHandler}
+        onKeyUp={onKeyUpHandler}
+      />
+    </>
   );
 };
 
