@@ -1,16 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import { doc } from 'firebase/firestore';
 
-import { uid } from '@/lib/utils';
 import EditableBlock from './editableBlock';
+import useGetBlocks from '@/hook/queries/useGetBlocks';
+import { db } from '@/firebase/app';
+import { uid } from '@/lib/utils';
 import {
-  EditablePageProps,
   AddBlockHandlerProps,
-  DeleteBlockHandlerProps
+  DeleteBlockHandlerProps,
+  Block
 } from '@/types/textEditor';
 
-const EditablePage = ({ initialBlocks }: EditablePageProps) => {
+const EditablePage = ({ children }: { children: React.ReactNode }) => {
+  const boardId = 'test1'; // 향후 query string으로 대체
+  const textEditorRef = doc(db, 'text-editor', boardId);
+  const { data } = useGetBlocks(textEditorRef);
+  const initialBlocks: Block[] = data.data()?.initialBlocks;
+
   const [blocks, setBlocks] = useState(initialBlocks);
 
   // 새로운 블록 추가 핸들러
@@ -46,15 +54,20 @@ const EditablePage = ({ initialBlocks }: EditablePageProps) => {
     });
   };
 
-  return blocks.map(block => (
-    <EditableBlock
-      key={block.id}
-      block={block}
-      addBlock={addBlockHandler}
-      deleteBlock={deleteBlockHandler}
-      setBlocks={setBlocks}
-    />
-  ));
+  return (
+    <>
+      {children}
+      {blocks.map(block => (
+        <EditableBlock
+          key={block.id}
+          block={block}
+          addBlock={addBlockHandler}
+          deleteBlock={deleteBlockHandler}
+          setBlocks={setBlocks}
+        />
+      ))}
+    </>
+  );
 };
 
 // EditablePage 컴포넌트를 내보냅니다.

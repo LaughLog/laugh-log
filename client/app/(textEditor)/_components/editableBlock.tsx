@@ -4,7 +4,7 @@ import { useRef, useState, KeyboardEvent, startTransition } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
 import SelectMenu from './selectMenu';
-import { Block, EditableBlockProps } from '@/types/textEditor';
+import { EditableBlockProps } from '@/types/textEditor';
 import { setCaretTo } from '@/lib/utils';
 
 const CMD_KEY = '/';
@@ -26,7 +26,7 @@ const EditableBlock = ({
   const onChangeHandler = (e: ContentEditableEvent) => {
     setHtml(e.target.value);
     startTransition(() => {
-      setBlocks((prevBlocks: Block[]) => {
+      setBlocks(prevBlocks => {
         const updatedBlocks = [...prevBlocks];
         let index = -1;
 
@@ -120,34 +120,6 @@ const EditableBlock = ({
         if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
           deleteBlock({ id: block.id, previousBlock });
         }
-      }
-    }
-
-    // 블록 이동
-    if (e.key === 'ArrowUp') {
-      e.preventDefault();
-
-      const currentBlock = contentEditable.current;
-      const previousBlock = currentBlock?.previousElementSibling as
-        | HTMLInputElement
-        | undefined;
-
-      // 이전 블록이 존재하고, article 태그가 아닌 경우에만 이동
-      if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
-        setCaretTo('end', previousBlock);
-      }
-    }
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-
-      const currentBlock = contentEditable.current;
-      const nextBlock = currentBlock?.nextElementSibling as
-        | HTMLInputElement
-        | undefined;
-
-      if (nextBlock) {
-        setCaretTo('end', nextBlock);
       }
     }
 
