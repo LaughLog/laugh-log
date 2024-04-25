@@ -43,6 +43,9 @@ const EditableBlock = ({
       // 새로운 박스 생성 전 menu close
       setMenuIsOpen(false);
 
+      // 새로운 박스 생성 전 menu close
+      setMenuIsOpen(false);
+
       // Shift + Enter 일 떄, block 안에서 줄 바꿈
       if (e.shiftKey) {
         return;
@@ -117,6 +120,34 @@ const EditableBlock = ({
         nextBlock.focus();
       }
     }
+  };
+
+  // 키 업 이벤트 핸들러
+  const onKeyUpHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+    // "/" 입력 시 새로운 menu open
+    if (e.key === CMD_KEY) {
+      openMenuHandler();
+    } else setMenuIsOpen(false);
+  };
+
+  // 메뉴 open 핸들러
+  const openMenuHandler = () => {
+    const { x, y } = getCaretCoordinates();
+    setMenuPosition({ x, y });
+    setMenuIsOpen(true);
+    document.addEventListener('click', closeMenuHandler);
+  };
+
+  // 메뉴 close 핸들러
+  const closeMenuHandler = () => {
+    setMenuPosition({ x: undefined, y: undefined });
+    setMenuIsOpen(false);
+    document.removeEventListener('click', closeMenuHandler);
+  };
+
+  const menuSelectionHandler = (selectedTag: string) => {
+    setTag(selectedTag);
+    closeMenuHandler();
   };
 
   // 키 업 이벤트 핸들러
