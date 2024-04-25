@@ -150,34 +150,6 @@ const EditableBlock = ({
     closeMenuHandler();
   };
 
-  // 키 업 이벤트 핸들러
-  const onKeyUpHandler = (e: KeyboardEvent<HTMLDivElement>) => {
-    // "/" 입력 시 새로운 menu open
-    if (e.key === CMD_KEY) {
-      openMenuHandler();
-    } else setMenuIsOpen(false);
-  };
-
-  // 메뉴 open 핸들러
-  const openMenuHandler = () => {
-    const { x, y } = getCaretCoordinates();
-    setMenuPosition({ x, y });
-    setMenuIsOpen(true);
-    document.addEventListener('click', closeMenuHandler);
-  };
-
-  // 메뉴 close 핸들러
-  const closeMenuHandler = () => {
-    setMenuPosition({ x: undefined, y: undefined });
-    setMenuIsOpen(false);
-    document.removeEventListener('click', closeMenuHandler);
-  };
-
-  const menuSelectionHandler = (selectedTag: string) => {
-    setTag(selectedTag);
-    closeMenuHandler();
-  };
-
   return (
     <>
       {menuIsOpen && (
