@@ -6,7 +6,7 @@ import BoardMenu from './boardMenu';
 
 const BoardItem = ({ boardId, boardName, date }: BoardItemProps) => {
   return (
-    <Link href={`/workspace/${boardId}`}>
+    <Link href={`/text-editor?id=${boardId}`}>
       <div className="aspect-[300/222] ">
         <div className="relative h-[80%] w-full rounded-md  bg-gray-200">
           <BoardMenu boardId={boardId} boardName={boardName}>
