@@ -1,18 +1,19 @@
 'use client';
 
-import { useRef, useState, KeyboardEvent } from 'react';
+import { useRef, useState, KeyboardEvent, startTransition } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
 import SelectMenu from './selectMenu';
-import { EditableBlockProps } from '@/types/textEditor';
-import { setCaretToEnd } from '@/lib/utils';
+import { Block, EditableBlockProps } from '@/types/textEditor';
+import { setCaretTo } from '@/lib/utils';
 
 const CMD_KEY = '/';
 
 const EditableBlock = ({
   block,
   addBlock,
-  deleteBlock
+  deleteBlock,
+  setBlocks
 }: EditableBlockProps) => {
   const [html, setHtml] = useState(block.html);
   const [tag, setTag] = useState(block.tag);
@@ -24,6 +25,26 @@ const EditableBlock = ({
   // HTML 변경 핸들러
   const onChangeHandler = (e: ContentEditableEvent) => {
     setHtml(e.target.value);
+    startTransition(() => {
+      setBlocks((prevBlocks: Block[]) => {
+        const updatedBlocks = [...prevBlocks];
+        let index = -1;
+
+        // 해당 블록의 인덱스를 찾을 때까지 반복
+        while (index === -1) {
+          index = updatedBlocks.findIndex(
+            block => block.id === contentEditable.current?.id
+          );
+        }
+
+        updatedBlocks[index] = {
+          ...updatedBlocks[index],
+          html: e.target.value
+        };
+
+        return updatedBlocks;
+      });
+    });
   };
 
   // 키 다운 이벤트 핸들러
@@ -41,23 +62,64 @@ const EditableBlock = ({
         return;
       } else {
         e.preventDefault();
-        addBlock({ id: block.id, ref: contentEditable.current });
+        const element = contentEditable.current;
+        const content = element?.innerHTML;
+        const anchorIndex = window.getSelection()?.anchorOffset;
+        const previousHtml = content?.substring(0, anchorIndex);
+        const newHtml = content?.substring(anchorIndex!);
+
+        if (previousHtml !== undefined && newHtml !== undefined) {
+          setHtml(previousHtml);
+          addBlock({ id: block.id, ref: element, newHtml });
+        }
       }
     }
 
     // 블록 삭제
-    if (
-      e.key === 'Backspace' &&
-      ((e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
-        !(e.nativeEvent.target as HTMLInputElement)?.innerHTML)
-    ) {
-      const previousBlock = contentEditable.current?.previousElementSibling as
-        | HTMLInputElement
-        | undefined;
+    if (e.key === 'Backspace') {
+      if (window.getSelection()?.anchorOffset === 0) {
+        const element = contentEditable.current;
+        const content = element?.innerHTML;
+        const previousBlock = element?.previousElementSibling as
+          | HTMLInputElement
+          | undefined;
 
-      // article 태그를 기준으로 가장 첫 번째 block 유지
-      if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
-        deleteBlock({ id: block.id, previousBlock });
+        if (
+          previousBlock !== undefined &&
+          previousBlock.tagName !== 'ARTICLE'
+        ) {
+          deleteBlock({ id: block.id, previousBlock });
+          setTimeout(() => {
+            // 이전 블록의 마지막 커서 위치 기억
+            const offset = previousBlock.innerHTML.length;
+
+            setHtml((previousBlock.innerHTML += content));
+
+            // 이전 블록의 마지막 커서 위치로 focus
+            if (offset) {
+              const range = document.createRange();
+              const selection = window.getSelection();
+
+              selection?.removeAllRanges();
+              range.setStart(previousBlock.firstChild!, offset);
+              range.setEnd(previousBlock.firstChild!, offset);
+              selection?.addRange(range);
+            } else setCaretTo('start', previousBlock);
+          });
+        }
+      }
+
+      if (
+        (e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
+        !(e.nativeEvent.target as HTMLInputElement)?.innerHTML
+      ) {
+        const previousBlock = contentEditable.current
+          ?.previousElementSibling as HTMLInputElement | undefined;
+
+        // article 태그를 기준으로 가장 첫 번째 block 유지
+        if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
+          deleteBlock({ id: block.id, previousBlock });
+        }
       }
     }
 
@@ -72,7 +134,7 @@ const EditableBlock = ({
 
       // 이전 블록이 존재하고, article 태그가 아닌 경우에만 이동
       if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
-        setCaretToEnd(previousBlock);
+        setCaretTo('end', previousBlock);
       }
     }
 
@@ -85,7 +147,35 @@ const EditableBlock = ({
         | undefined;
 
       if (nextBlock) {
-        setCaretToEnd(nextBlock);
+        setCaretTo('end', nextBlock);
+      }
+    }
+
+    // 블록 이동
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+
+      const currentBlock = contentEditable.current;
+      const previousBlock = currentBlock?.previousElementSibling as
+        | HTMLInputElement
+        | undefined;
+
+      // 이전 블록이 존재하고, article 태그가 아닌 경우에만 이동
+      if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
+        setCaretTo('end', previousBlock);
+      }
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+
+      const currentBlock = contentEditable.current;
+      const nextBlock = currentBlock?.nextElementSibling as
+        | HTMLInputElement
+        | undefined;
+
+      if (nextBlock) {
+        setCaretTo('end', nextBlock);
       }
     }
   };
@@ -111,7 +201,7 @@ const EditableBlock = ({
 
     setTimeout(() => {
       if (contentEditable.current) {
-        setCaretToEnd(contentEditable.current);
+        setCaretTo('end', contentEditable.current);
         setIsMenuOpen(false);
       }
     });
@@ -132,6 +222,7 @@ const EditableBlock = ({
         />
       )}
       <ContentEditable
+        id={block.id}
         className="mx-0 my-1 rounded bg-slate-50 p-2 hover:outline-[#f5f6fb]"
         innerRef={contentEditable}
         html={html}

@@ -31,15 +31,19 @@ export const getCaretCoordinates = () => {
   return { x, y };
 };
 
-// 사용자 커서 컨텐츠의 끝으로 이동
-export const setCaretToEnd = (element: HTMLDivElement | null) => {
+// 사용자 커서 컨텐츠의 시작 혹은 끝으로 이동
+export const setCaretTo = (
+  position: 'start' | 'end',
+  element: HTMLDivElement | null
+) => {
   const range = document.createRange();
   const selection = window.getSelection();
 
   selection?.removeAllRanges();
 
   range.selectNodeContents(element!);
-  range.collapse(false);
+  if (position === 'start') range.collapse(true);
+  else range.collapse(false);
 
   selection?.addRange(range);
   element?.focus();

@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 export type Block = {
   id: string;
   html: string;
@@ -13,6 +15,7 @@ export type EditablePageProps = {
 export type AddBlockHandlerProps = {
   id: string;
   ref: HTMLInputElement | null;
+  newHtml: string;
 };
 
 export type DeleteBlockHandlerProps = {
@@ -26,4 +29,5 @@ export type EditableBlockProps = {
   block: Block;
   addBlock: (currentBlock: AddBlockHandlerProps) => void;
   deleteBlock: (currentBlock: DeleteBlockHandlerProps) => void;
+  setBlocks: Dispatch<SetStateAction<Block[]>>;
 };
