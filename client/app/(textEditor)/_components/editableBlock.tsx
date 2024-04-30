@@ -143,7 +143,7 @@ const EditableBlock = ({
   // content 변경 핸들러
   const onChangeHandler = (e: ContentEditableEvent) => {
     const value = e.target.value;
-
+    setContent(value);
     // 디바운스로 정확한 입력값 전달하기
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
