@@ -281,12 +281,6 @@ const EditableBlock = ({
     // 한글 key일 때 2번 입력되는 오류 방지
     if (e.nativeEvent.isComposing) return;
 
-    /*
-    const newContent = e.target.value;
-    startTransition(() => setContent(newContent));
-    socket.emit('set-block-content', blockId, newContent);
-    */
-
     // "/" 입력 시 새로운 menu open
     if (e.key === CMD_KEY.SLASH) {
       openMenuHandler();
