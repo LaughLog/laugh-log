@@ -4,7 +4,6 @@ import SignInBg from '/public/sign-in-welcome.svg';
 
 import './sign-in.css';
 
-// FIX: 접속 시 로딩 및 로그인 버튼 클릭 이후 로딩 처리 필요
 const SignIn = () => {
   return (
     <div className="flex h-screen w-screen items-center justify-evenly bg-signIn bg-cover">
