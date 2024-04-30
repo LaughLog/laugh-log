@@ -27,6 +27,7 @@ const EditableBlock = ({
   const [tag, setTag] = useState(blockTag);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const contentEditable = useRef<HTMLInputElement>(null);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   // socket events
   useEffect(() => {
@@ -89,19 +90,16 @@ const EditableBlock = ({
     const blockContentHandler: BlockContentHandler = (id, value) => {
       if (blockId === id) {
         setContent(value);
-
         setBlocks(pre => {
           const updatedBlocks = [...pre];
-          let index = -1;
+          const index = updatedBlocks.findIndex(block => block.id === id);
 
-          while (index === -1) {
-            index = updatedBlocks.findIndex(block => block.id === id);
+          if (index !== -1) {
+            updatedBlocks[index] = {
+              ...updatedBlocks[index],
+              content: value
+            };
           }
-
-          updatedBlocks[index] = {
-            ...updatedBlocks[index],
-            content: value
-          };
 
           return updatedBlocks;
         });
@@ -144,8 +142,16 @@ const EditableBlock = ({
 
   // content 변경 핸들러
   const onChangeHandler = (e: ContentEditableEvent) => {
-    setContent(e.target.value);
-    socket.emit('set-block-content', blockId, e.target.value);
+    const value = e.target.value;
+
+    // 디바운스로 정확한 입력값 전달하기
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      socket.emit('set-block-content', blockId, value);
+    }, SET_TIME.DEBOUNCE);
   };
 
   const onKeyDownHandler: KeyEventHandler = e => {
@@ -272,6 +278,15 @@ const EditableBlock = ({
   };
 
   const onKeyUpHandler: KeyEventHandler = e => {
+    // 한글 key일 때 2번 입력되는 오류 방지
+    if (e.nativeEvent.isComposing) return;
+
+    /*
+    const newContent = e.target.value;
+    startTransition(() => setContent(newContent));
+    socket.emit('set-block-content', blockId, newContent);
+    */
+
     // "/" 입력 시 새로운 menu open
     if (e.key === CMD_KEY.SLASH) {
       openMenuHandler();
