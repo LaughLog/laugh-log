@@ -1,112 +1,74 @@
 'use client';
 
+import { useState, useEffect, useCallback } from 'react';
+
+import { socket } from '@/socket/socket';
 import { getCaretCoordinates } from '@/lib/utils';
-import {
-  useState,
-  useEffect,
-  useCallback,
-  Dispatch,
-  SetStateAction
-} from 'react';
+import { CMD_KEY, MENU, MENU_ITEMS } from '@/constants/textEditor';
+import { MenuKeyDownHandler, SelectMenuProps } from '@/types/textEditor';
 
-// menu 높이
-const MENU_HEIGHT = 150;
-
-// menu 목록
-const menuItems = [
-  {
-    id: 'page-title',
-    tag: 'h1',
-    label: '제목 1'
-  },
-  {
-    id: 'heading',
-    tag: 'h2',
-    label: '제목 2'
-  },
-  {
-    id: 'subheading',
-    tag: 'h3',
-    label: '제목 3'
-  },
-  {
-    id: 'paragraph',
-    tag: 'p',
-    label: '텍스트'
-  }
-];
-
-const SelectMenu = ({
-  setHtml,
-  onSelect,
-  onClose
-}: {
-  setHtml: Dispatch<SetStateAction<string>>;
-  onSelect: (selectedTag: string) => void;
-  onClose: () => void;
-}) => {
+const SelectMenu = ({ id, setContent, onClose }: SelectMenuProps) => {
+  const [itemIndex, setItemIndex] = useState(0);
   const { x, y } = getCaretCoordinates();
   const [menuStyle, setMenuStyle] = useState<{
     top: number | undefined;
     left: number | undefined;
-  }>({ top: y! - MENU_HEIGHT, left: x });
-  const [itemIndex, setItemIndex] = useState(0);
+  }>({ top: y! - MENU.HEIGHT, left: x });
 
-  const handleKeyDown = useCallback(
-    (e: globalThis.KeyboardEvent) => {
+  const menuKeyDownHandler: MenuKeyDownHandler = useCallback(
+    e => {
       if (e.isComposing) return;
 
-      if (e.key === 'Enter') {
+      if (e.key === CMD_KEY.ENTER) {
         e.preventDefault();
-        onClose();
-        onSelect(menuItems[itemIndex].tag);
+        socket.emit('set-block-tag', id, MENU_ITEMS[itemIndex].tag);
       }
 
-      if (e.key === 'ArrowUp') {
+      if (e.key === CMD_KEY.ARROW_UP) {
         e.preventDefault();
         const prevSelected =
-          itemIndex === 0 ? menuItems.length - 1 : itemIndex - 1;
+          itemIndex === 0 ? MENU_ITEMS.length - 1 : itemIndex - 1;
         setItemIndex(prevSelected);
       }
 
-      if (e.key === 'ArrowDown' || e.key === 'Tab') {
+      if (e.key === CMD_KEY.ARROW_DOWN || e.key === CMD_KEY.TAB) {
         e.preventDefault();
         const nextSelected =
-          itemIndex === menuItems.length - 1 ? 0 : itemIndex + 1;
+          itemIndex === MENU_ITEMS.length - 1 ? 0 : itemIndex + 1;
         setItemIndex(nextSelected);
       }
 
-      if (e.key === '/') {
-        setHtml(pre => pre + e.key);
+      if (e.key === CMD_KEY.SLASH) {
+        setContent(pre => pre + e.key);
         setMenuStyle(pre => ({ ...pre, left: pre.left! + 10 }));
       }
 
       if (
-        e.key !== 'Enter' &&
-        e.key !== 'ArrowUp' &&
-        e.key !== 'Tab' &&
-        e.key !== 'ArrowDown' &&
-        e.key !== '/'
+        e.key !== CMD_KEY.ENTER &&
+        e.key !== CMD_KEY.ARROW_UP &&
+        e.key !== CMD_KEY.TAB &&
+        e.key !== CMD_KEY.ARROW_DOWN &&
+        e.key !== CMD_KEY.SLASH
       ) {
         onClose();
       }
     },
-    [onClose, onSelect, itemIndex, setHtml]
+    [id, itemIndex, onClose, setContent]
   );
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', menuKeyDownHandler);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', menuKeyDownHandler);
     };
-  }, [handleKeyDown]);
+  }, [menuKeyDownHandler]);
 
   return (
     <div className="select-menu" style={menuStyle}>
       <div className="items">
-        {menuItems.map((item, key) => {
-          const isSelected = menuItems.indexOf(item) === itemIndex;
+        {MENU_ITEMS.map((item, key) => {
+          const isSelected = MENU_ITEMS.indexOf(item) === itemIndex;
 
           return (
             <div
@@ -114,7 +76,6 @@ const SelectMenu = ({
               key={key}
               role="button"
               tabIndex={0}
-              onClick={() => onSelect(item.tag)}
             >
               {item.label}
             </div>
