@@ -25,8 +25,20 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("We are connected");
 
-  socket.on("chat", (chat) => {
-    io.emit("chat", chat);
+  socket.on("add-blocks", (blockId, previousHtml, newBlock) => {
+    io.emit("add-blocks", blockId, previousHtml, newBlock);
+  });
+
+  socket.on("delete-blocks", (blockId, previousBlockID, newContent) => {
+    io.emit("delete-blocks", blockId, previousBlockID, newContent);
+  });
+
+  socket.on("set-block-content", (id, value) => {
+    io.emit("set-block-content", id, value);
+  });
+
+  socket.on("set-block-tag", (id, tag) => {
+    io.emit("set-block-tag", id, tag);
   });
 
   socket.on("draw-line", ({ prevPoint, currentPoint, color }) => {
