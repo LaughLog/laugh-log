@@ -41,12 +41,6 @@ io.on("connection", (socket) => {
     io.emit("set-block-tag", id, tag);
   });
 
-  socket.on("draw-line", ({ prevPoint, currentPoint, color }) => {
-    socket.broadcast.emit("draw-line", { prevPoint, currentPoint, color });
-  });
-
-  socket.on("clear", () => io.emit("clear"));
-
   socket.on("disconnect", () => {
     console.log("disconnected");
   });
