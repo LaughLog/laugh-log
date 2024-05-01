@@ -1,58 +1,165 @@
 'use client';
 
-import { useRef, useState, KeyboardEvent, startTransition } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
+import { socket } from '@/socket/socket';
 import SelectMenu from './selectMenu';
-import { EditableBlockProps } from '@/types/textEditor';
-import { setCaretTo } from '@/lib/utils';
-
-const CMD_KEY = '/';
+import { setCaretTo, uid } from '@/lib/utils';
+import { CMD_KEY, SET_TIME } from '@/constants/textEditor';
+import {
+  EditableBlockProps,
+  BlockContentHandler,
+  AddBlocksHandler,
+  DeleteBlocksHandler,
+  ChangeTagHandler,
+  KeyEventHandler,
+  MenuSelectionHandler
+} from '@/types/textEditor';
 
 const EditableBlock = ({
-  block,
-  addBlock,
-  deleteBlock,
+  blockId,
+  blockContent,
+  blockTag,
   setBlocks
 }: EditableBlockProps) => {
-  const [html, setHtml] = useState(block.html);
-  const [tag, setTag] = useState(block.tag);
+  const [content, setContent] = useState(blockContent);
+  const [tag, setTag] = useState(blockTag);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // ContentEditable 컴포넌트에 대한 참조
   const contentEditable = useRef<HTMLInputElement>(null);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  // HTML 변경 핸들러
-  const onChangeHandler = (e: ContentEditableEvent) => {
-    setHtml(e.target.value);
+  // socket events
+  useEffect(() => {
+    const addBlocksHandler: AddBlocksHandler = (id, previousHtml, newBlock) => {
+      if (blockId === id) {
+        setContent(previousHtml);
+        setBlocks(pre => {
+          const updatedBlocks = [...pre];
+          let index = -1;
 
-    setBlocks(prevBlocks => {
-      const updatedBlocks = [...prevBlocks];
-      let index = -1;
+          // 해당 블록의 인덱스를 찾을 때까지 반복
+          while (index === -1) {
+            index = updatedBlocks.findIndex(block => block.id === id);
+          }
 
-      // 해당 블록의 인덱스를 찾을 때까지 반복
-      while (index === -1) {
-        index = updatedBlocks.findIndex(
-          block => block.id === contentEditable.current?.id
-        );
+          updatedBlocks.splice(index + 1, 0, newBlock);
+
+          updatedBlocks[index].content = previousHtml;
+
+          return updatedBlocks;
+        });
       }
+    };
 
-      updatedBlocks[index] = {
-        ...updatedBlocks[index],
-        html: e.target.value
-      };
+    const deleteBlocksHandler: DeleteBlocksHandler = (
+      deleteBlockId,
+      previousBlockId,
+      newContent
+    ) => {
+      if (blockId === previousBlockId) {
+        if (newContent !== '') {
+          setContent(newContent);
+        }
 
-      return updatedBlocks;
-    });
+        setBlocks(pre => {
+          const updatedBlocks = [
+            ...pre.filter(block => block.id !== deleteBlockId)
+          ];
+
+          if (newContent !== '') {
+            let index = -1;
+
+            while (index === -1) {
+              index = updatedBlocks.findIndex(
+                block => block.id === previousBlockId
+              );
+            }
+
+            updatedBlocks[index] = {
+              ...updatedBlocks[index],
+              content: newContent
+            };
+          }
+
+          return updatedBlocks;
+        });
+      }
+    };
+
+    const blockContentHandler: BlockContentHandler = (id, value) => {
+      if (blockId === id) {
+        setContent(value);
+        setBlocks(pre => {
+          const updatedBlocks = [...pre];
+          const index = updatedBlocks.findIndex(block => block.id === id);
+
+          if (index !== -1) {
+            updatedBlocks[index] = {
+              ...updatedBlocks[index],
+              content: value
+            };
+          }
+
+          return updatedBlocks;
+        });
+      }
+    };
+
+    const changeTagHandler: ChangeTagHandler = (id, tag) => {
+      if (blockId === id) {
+        menuSelectionHandler(tag);
+        setBlocks(pre => {
+          const updatedBlocks = [...pre];
+          let index = -1;
+
+          while (index === -1) {
+            index = updatedBlocks.findIndex(block => block.id === id);
+          }
+
+          updatedBlocks[index] = {
+            ...updatedBlocks[index],
+            tag
+          };
+
+          return updatedBlocks;
+        });
+      }
+    };
+
+    socket.on('add-blocks', addBlocksHandler);
+    socket.on('delete-blocks', deleteBlocksHandler);
+    socket.on('set-block-content', blockContentHandler);
+    socket.on('set-block-tag', changeTagHandler);
+
+    return () => {
+      socket.off('add-blocks', addBlocksHandler);
+      socket.off('delete-blocks', deleteBlocksHandler);
+      socket.off('set-block-content', blockContentHandler);
+      socket.off('set-block-tag', changeTagHandler);
+    };
+  }, []);
+
+  // content 변경 핸들러
+  const onChangeHandler = (e: ContentEditableEvent) => {
+    const value = e.target.value;
+    setContent(value);
+    // 디바운스로 정확한 입력값 전달하기
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      socket.emit('set-block-content', blockId, value);
+    }, SET_TIME.DEBOUNCE);
   };
 
-  // 키 다운 이벤트 핸들러
-  const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDownHandler: KeyEventHandler = e => {
     // 한글 key일 때 2번 입력되는 오류 방지
     if (e.nativeEvent.isComposing) return;
 
     // 새로운 블록 추가
-    if (e.key === 'Enter') {
+    if (e.key === CMD_KEY.ENTER) {
       // 새로운 박스 생성 전 menu close
       setIsMenuOpen(false);
 
@@ -68,15 +175,26 @@ const EditableBlock = ({
         const newHtml = content?.substring(anchorIndex!);
 
         if (previousHtml !== undefined && newHtml !== undefined) {
-          setHtml(previousHtml);
-          addBlock({ id: block.id, ref: element, previousHtml, newHtml });
+          const newBlock = { id: uid(), content: newHtml, tag: 'p' };
+
+          socket.emit('add-blocks', blockId, previousHtml, newBlock);
+
+          setTimeout(() => {
+            (element?.nextElementSibling as HTMLInputElement).focus();
+          }, SET_TIME.FOCUS_NEXT_EL);
         }
       }
     }
 
     // 블록 삭제
-    if (e.key === 'Backspace') {
-      if (window.getSelection()?.anchorOffset === 0) {
+    if (e.key === CMD_KEY.BACKSPACE) {
+      if (
+        window.getSelection()?.anchorOffset === 0 &&
+        !(
+          (e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
+          !(e.nativeEvent.target as HTMLInputElement)?.innerHTML
+        )
+      ) {
         const element = contentEditable.current;
         const content = element?.innerHTML;
         const previousBlock = element?.previousElementSibling as
@@ -87,13 +205,14 @@ const EditableBlock = ({
           previousBlock !== undefined &&
           previousBlock.tagName !== 'ARTICLE'
         ) {
-          if (content) deleteBlock({ id: block.id, previousBlock, content });
+          const newContent = previousBlock.innerHTML + content;
+
+          if (content)
+            socket.emit('delete-blocks', blockId, previousBlock.id, newContent);
 
           setTimeout(() => {
             // 이전 블록의 마지막 커서 위치 기억
             const offset = previousBlock.innerHTML.length;
-
-            setHtml((previousBlock.innerHTML += content));
 
             // 이전 블록의 마지막 커서 위치로 focus
             if (offset) {
@@ -107,26 +226,30 @@ const EditableBlock = ({
             } else {
               setCaretTo('start', previousBlock);
             }
-          }, 350);
+          }, SET_TIME.FOCUS_PREVIOUS_EL);
         }
       }
 
       if (
-        (e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
-        !(e.nativeEvent.target as HTMLInputElement)?.innerHTML
+        window.getSelection()?.anchorOffset === 0 &&
+        ((e.nativeEvent.target as HTMLInputElement)?.innerHTML === '<br>' ||
+          !(e.nativeEvent.target as HTMLInputElement)?.innerHTML)
       ) {
+        e.preventDefault();
+
         const previousBlock = contentEditable.current
           ?.previousElementSibling as HTMLInputElement | undefined;
 
         // article 태그를 기준으로 가장 첫 번째 block 유지
         if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
-          deleteBlock({ id: block.id, previousBlock, content: '' });
+          socket.emit('delete-blocks', blockId, previousBlock.id, '');
+          setCaretTo('end', previousBlock);
         }
       }
     }
 
     // 블록 이동
-    if (e.key === 'ArrowUp') {
+    if (e.key === CMD_KEY.ARROW_UP) {
       e.preventDefault();
 
       const currentBlock = contentEditable.current;
@@ -140,7 +263,7 @@ const EditableBlock = ({
       }
     }
 
-    if (e.key === 'ArrowDown') {
+    if (e.key === CMD_KEY.ARROW_DOWN) {
       e.preventDefault();
 
       const currentBlock = contentEditable.current;
@@ -154,22 +277,22 @@ const EditableBlock = ({
     }
   };
 
-  // 키 업 이벤트 핸들러
-  const onKeyUpHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+  const onKeyUpHandler: KeyEventHandler = e => {
+    // 한글 key일 때 2번 입력되는 오류 방지
+    if (e.nativeEvent.isComposing) return;
+
     // "/" 입력 시 새로운 menu open
-    if (e.key === CMD_KEY) {
+    if (e.key === CMD_KEY.SLASH) {
       openMenuHandler();
     }
   };
 
-  // 메뉴 open 핸들러
   const openMenuHandler = () => {
     setIsMenuOpen(true);
     document.addEventListener('click', closeMenuHandler);
     contentEditable.current?.blur();
   };
 
-  // 메뉴 close 핸들러
   const closeMenuHandler = () => {
     document.removeEventListener('click', closeMenuHandler);
 
@@ -178,10 +301,10 @@ const EditableBlock = ({
         setCaretTo('end', contentEditable.current);
         setIsMenuOpen(false);
       }
-    });
+    }, SET_TIME.FOCUS_CURRENT_EL);
   };
 
-  const menuSelectionHandler = (selectedTag: string) => {
+  const menuSelectionHandler: MenuSelectionHandler = selectedTag => {
     setTag(selectedTag);
     closeMenuHandler();
   };
@@ -190,16 +313,16 @@ const EditableBlock = ({
     <>
       {isMenuOpen && (
         <SelectMenu
-          setHtml={setHtml}
-          onSelect={menuSelectionHandler}
+          id={blockId}
+          setContent={setContent}
           onClose={closeMenuHandler}
         />
       )}
       <ContentEditable
-        id={block.id}
+        id={blockId}
         className="mx-0 my-1 rounded bg-slate-50 p-2 hover:outline-[#f5f6fb]"
         innerRef={contentEditable}
-        html={html}
+        html={content}
         tagName={tag}
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler}
