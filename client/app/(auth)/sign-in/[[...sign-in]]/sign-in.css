@@ -15,7 +15,9 @@
 .cl-internal-b3fm6y,
 .cl-headerTitle,
 .cl-headerSubtitle,
-.cl-footerAction {
+.cl-footerAction,
+.cl-dividerRow,
+.cl-form {
   display: none;
 }
 

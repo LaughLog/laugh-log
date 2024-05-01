@@ -27,6 +27,7 @@
       'Segoe UI Emoji',
       'Segoe UI Symbol',
       sans-serif;
+    @apply border-border;
   }
   *,
   :after,
@@ -51,6 +52,7 @@
       scrollbar-width: none;
     }
     scrollbar-width: none;
+    @apply bg-background text-foreground;
   }
   img,
   svg {
@@ -96,15 +98,6 @@
   a {
     color: inherit;
     text-decoration: none;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
 
