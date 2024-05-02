@@ -24,7 +24,7 @@ const TeamBoard = ({ organizationId }: TeamBoardProps) => {
 
   return (
     <div className="flex h-[calc(100vh-332px)] w-full flex-col gap-6">
-      <Subtitle>팀 보드</Subtitle>
+      <Subtitle>회의록</Subtitle>
       {boardList?.length ? (
         <BoardList boardList={boardList} />
       ) : (
