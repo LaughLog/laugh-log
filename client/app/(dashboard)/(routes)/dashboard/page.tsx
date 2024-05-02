@@ -2,7 +2,7 @@
 
 import { useOrganization } from '@clerk/nextjs';
 
-import { addOrganization } from '@/lib/firebaseUtils';
+import { addOrganization } from '@/lib/utils/firebase';
 import Sidebar from '@/app/(dashboard)/_components/sidebar/sidebar';
 import StartWithTemplate from '@/app/(dashboard)/_components/startWithTemplate';
 import TeamBoard from '@/app/(dashboard)/_components/teamBoard';

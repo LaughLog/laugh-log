@@ -166,7 +166,7 @@
   }
 }
 
-/* select-menu */
+/* select-block-menu */
 @layer components {
   .select-menu {
     position: absolute;

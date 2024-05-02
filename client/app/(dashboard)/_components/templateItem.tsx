@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { TemplateItemProps } from '@/types/dashboard';
-import { addBoard } from '@/lib/firebaseUtils';
+import { addBoard } from '@/lib/utils/firebase';
 
 const TemplateItem = ({
   organizationId,

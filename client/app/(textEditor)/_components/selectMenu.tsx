@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import { socket } from '@/socket/socket';
-import { getCaretCoordinates } from '@/lib/utils';
+import { getCaretCoordinates } from '@/lib/utils/textEditor';
 import { CMD_KEY, MENU, MENU_ITEMS } from '@/constants/textEditor';
 import { MenuKeyDownHandler, SelectMenuProps } from '@/types/textEditor';
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { TeamBoardProps, BoardListType } from '@/types/dashboard';
-import { addBoard, getBoardList } from '@/lib/firebaseUtils';
+import { addBoard, getBoardList } from '@/lib/utils/firebase';
 import Subtitle from './subtitle';
 import EmptyBoards from './emptyBoards';
 import BoardList from './boardList';

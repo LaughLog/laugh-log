@@ -5,7 +5,7 @@ import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
 import { socket } from '@/socket/socket';
 import SelectMenu from './selectMenu';
-import { setCaretTo, uid } from '@/lib/utils';
+import { setCaretTo, uid } from '@/lib/utils/textEditor';
 import { CMD_KEY, SET_TIME } from '@/constants/textEditor';
 import {
   EditableBlockProps,

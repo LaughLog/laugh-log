@@ -3,7 +3,7 @@
 import { SignedIn, SignedOut } from '@clerk/nextjs';
 
 import useRectOnTop from '@/hook/useRectOnTop';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/textEditor';
 import CustomSignIn from '@/components/auth/customSignIn';
 import CustomSignOut from '@/components/auth/customSignOut';
 

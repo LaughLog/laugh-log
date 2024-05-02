@@ -17,8 +17,8 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { renameBoard, deleteBoard } from '@/lib/firebaseUtils';
+import { cn } from '@/lib/utils/textEditor';
+import { renameBoard, deleteBoard } from '@/lib/utils/firebase';
 
 const MenuItem = ({
   boardId,

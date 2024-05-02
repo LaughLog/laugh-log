@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 
-import { addBoard } from '@/lib/firebaseUtils';
+import { addBoard } from '@/lib/utils/firebase';
 import { EmptyBoardsProps } from '@/types/dashboard';
 
 const EmptyBoards = ({ organizationId, onClick }: EmptyBoardsProps) => {
