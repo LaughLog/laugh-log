@@ -7,6 +7,7 @@ import {
   OrganizationProfile
 } from '@clerk/nextjs';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import './sidebar.css';
 
@@ -15,10 +16,12 @@ const Sidebar = () => {
 
   return (
     <div className="h-full w-[328px] bg-coral100 px-6 py-8 ">
-      <div className="flex gap-[6px]">
-        <Image src="/logo.svg" alt="logo" width={160} height={32} />
-        <Image src="/star.svg" alt="star" width={32} height={32} />
-      </div>
+      <Link href={'/'}>
+        <div className="flex gap-[6px]">
+          <Image src="/logo.svg" alt="logo" width={160} height={32} />
+          <Image src="/star.svg" alt="star" width={32} height={32} />
+        </div>
+      </Link>
       <div className="relative mt-6 h-[74px] w-[280px] hover:bg-coral200">
         <span className="absolute left-2 top-2 z-20 text-xs font-bold">나</span>
         <UserButton
