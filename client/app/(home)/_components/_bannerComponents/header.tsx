@@ -22,10 +22,10 @@ const Header = () => {
     >
       <span className="subtitle4">LaughLog</span>
       <div className="flex gap-4">
-        <Button>
-          <Link href={'/dashboard'}>대시보드</Link>
-        </Button>
         <SignedIn>
+          <Button>
+            <Link href={'/dashboard'}>대시보드</Link>
+          </Button>
           <CustomSignOut />
         </SignedIn>
         <SignedOut>
