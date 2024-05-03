@@ -3,7 +3,7 @@ interface SubtitleProps {
 }
 
 const Subtitle = ({ children }: SubtitleProps) => {
-  return <div className="subtitle4 tracking-tight">{children}</div>;
+  return <div className="subtitle5 tracking-tight">{children}</div>;
 };
 
 export default Subtitle;

@@ -70,7 +70,7 @@ export const addTextEditor = async (boardId: string, type: string) => {
     case '회의록':
       initBlock = MEETING_MINUTES_TYPE;
       break;
-    case '새로운 보드':
+    default:
       initBlock = NEW_BOARD_TYPE;
       break;
   }

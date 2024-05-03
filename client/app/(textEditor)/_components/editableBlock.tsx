@@ -132,6 +132,8 @@ const EditableBlock = ({
     socket.on('set-block-content', blockContentHandler);
     socket.on('set-block-tag', changeTagHandler);
 
+    setCaretTo('end', contentEditable.current);
+
     return () => {
       socket.off('add-blocks', addBlocksHandler);
       socket.off('delete-blocks', deleteBlocksHandler);
@@ -320,7 +322,7 @@ const EditableBlock = ({
       )}
       <ContentEditable
         id={blockId}
-        className="mx-0 my-1 rounded bg-slate-50 p-2 hover:outline-[#f5f6fb]"
+        className="m-0 rounded px-2 py-1 outline-none hover:outline-[#f5f6fb]"
         innerRef={contentEditable}
         html={content}
         tagName={tag}

@@ -18,11 +18,9 @@ const Dashboard = () => {
     <div className="flex h-full w-full">
       <Sidebar />
       {organization && (
-        <div className="flex h-full w-[calc(100%-328px)]">
-          <div className="flex h-full w-[calc(100vw-328px)] flex-col justify-between gap-16 overflow-hidden px-14">
-            <StartWithTemplate organizationId={organization.id} />
-            <TeamBoard organizationId={organization.id} />
-          </div>
+        <div className="flex h-full w-[calc(100vw-328px)] flex-col justify-between gap-16 overflow-hidden px-14">
+          <StartWithTemplate organizationId={organization.id} />
+          <TeamBoard organizationId={organization.id} />
         </div>
       )}
     </div>
