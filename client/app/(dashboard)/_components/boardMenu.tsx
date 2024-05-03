@@ -5,8 +5,12 @@ import {
   DropdownMenuContent
 } from '@/components/ui/dropdown-menu';
 import MenuItem from './MenuItem';
+import { useOrganization } from '@clerk/nextjs';
 
 const BoardMenu = ({ children, boardId, boardName }: BoardMenuProps) => {
+  const { organization } = useOrganization();
+  const organizationId = organization?.id;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -16,6 +20,7 @@ const BoardMenu = ({ children, boardId, boardName }: BoardMenuProps) => {
         className="flex flex-col"
       >
         <MenuItem
+          organizationId={organizationId ? organizationId : ''}
           boardId={boardId}
           boardName={boardName}
           header="이름 변경"
@@ -23,6 +28,7 @@ const BoardMenu = ({ children, boardId, boardName }: BoardMenuProps) => {
           button="수정"
         />
         <MenuItem
+          organizationId={organizationId ? organizationId : ''}
           boardId={boardId}
           boardName={boardName}
           header="보드 삭제"

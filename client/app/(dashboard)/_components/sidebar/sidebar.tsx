@@ -77,7 +77,7 @@ const Sidebar = () => {
           <OrganizationProfile
             appearance={{
               elements: {
-                card: 'm-0 bg-transparent shadow-none',
+                card: 'm-0 bg-transparent shadow-none w-full',
                 navbar: 'hidden',
                 header: 'hidden',
                 pageScrollBox: 'p-0',

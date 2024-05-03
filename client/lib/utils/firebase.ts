@@ -1,7 +1,6 @@
 import {
   setDoc,
   getDocs,
-  addDoc,
   updateDoc,
   deleteDoc,
   doc,
@@ -29,38 +28,6 @@ export const getBoardList = async (organizationId: string) => {
       date: doc.data().date
     };
   });
-};
-
-export const addBoard = async (organizationId: string) => {
-  const docRef = await addDoc(collection(db, 'team', organizationId, 'board'), {
-    name: format(new Date(), 'yyyy.MM.dd  hh:mm') + ' 회의록',
-    date: format(new Date(), 'yyyy.MM.dd  hh:mm')
-  });
-  return docRef.id;
-};
-
-export const renameBoard = async ({
-  organizationId,
-  boardId,
-  boardName
-}: {
-  organizationId: string;
-  boardId: string;
-  boardName: string;
-}) => {
-  const docRef = doc(db, 'team', organizationId, 'board', boardId);
-  await updateDoc(docRef, { name: boardName });
-};
-
-export const deleteBoard = async ({
-  organizationId,
-  boardId
-}: {
-  organizationId: string;
-  boardId: string;
-}) => {
-  await deleteDoc(doc(db, 'team', organizationId, 'board', boardId));
-  await deleteDoc(doc(db, 'text-editor', boardId));
 };
 
 export const addTextEditor = async (boardId: string, type: string) => {

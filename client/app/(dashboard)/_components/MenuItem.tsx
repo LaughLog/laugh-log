@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useOrganization } from '@clerk/nextjs';
 
 import { MenuItemProps } from '@/types/dashboard';
 import {
@@ -18,9 +17,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/textEditor';
-import { renameBoard, deleteBoard } from '@/lib/utils/firebase';
+import useRenameBoard from '@/hook/queries/uesRenameBoard';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { db } from '@/firebase/app';
+import useDeleteBoard from '@/hook/queries/useDeleteBoard';
 
 const MenuItem = ({
+  organizationId,
   boardId,
   boardName,
   header,
@@ -28,20 +31,17 @@ const MenuItem = ({
   button
 }: MenuItemProps) => {
   const [name, setName] = useState(boardName);
-  const { organization } = useOrganization();
+  const { mutateAsync: renameBoard } = useRenameBoard({
+    organizationId,
+    boardId
+  });
+  const { mutateAsync: deleteBoard } = useDeleteBoard(boardId);
 
   const handleClick = async () => {
-    if (organization) {
-      if (header === '이름 변경') {
-        await renameBoard({
-          organizationId: organization.id,
-          boardId,
-          boardName: name
-        });
-      } else {
-        await deleteBoard({ organizationId: organization.id, boardId });
-      }
-      window.location.reload();
+    if (header === '이름 변경') {
+      await renameBoard(name);
+    } else {
+      await deleteBoard({ organizationId, boardId });
     }
   };
 

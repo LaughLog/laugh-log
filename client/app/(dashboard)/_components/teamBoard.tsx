@@ -1,36 +1,26 @@
-import { useState, useEffect } from 'react';
-
-import { TeamBoardProps, BoardListType } from '@/types/dashboard';
-import { addBoard, getBoardList } from '@/lib/utils/firebase';
-import Subtitle from './subtitle';
 import EmptyBoards from './emptyBoards';
 import BoardList from './boardList';
+import { TeamBoardProps } from '@/types/dashboard';
+import useGetBoardList from '@/hook/queries/useGetBoardList';
 
 const TeamBoard = ({ organizationId }: TeamBoardProps) => {
-  const [boardList, setBoardList] = useState<BoardListType>();
-
-  useEffect(() => {
-    const fetchBoardList = async () => {
-      const data = await getBoardList(organizationId);
-      setBoardList(data);
+  const { data: querySnapshot } = useGetBoardList(organizationId);
+  const boardList = querySnapshot.docs.map(doc => {
+    return {
+      id: doc.id,
+      name: doc.data().name,
+      date: doc.data().date
     };
-
-    fetchBoardList();
-  }, [organizationId]);
-
-  const onClick = async () => {
-    await addBoard(organizationId);
-  };
+  });
 
   return (
-    <div className="flex h-[calc(100vh-332px)] w-full flex-col gap-6">
-      <Subtitle>회의록</Subtitle>
+    <>
       {boardList?.length ? (
         <BoardList boardList={boardList} />
       ) : (
-        <EmptyBoards organizationId={organizationId} onClick={onClick} />
+        <EmptyBoards organizationId={organizationId} />
       )}
-    </div>
+    </>
   );
 };
 

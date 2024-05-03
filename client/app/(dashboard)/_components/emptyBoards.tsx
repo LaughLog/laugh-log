@@ -1,15 +1,17 @@
 import { useRouter } from 'next/navigation';
 
-import { addBoard, addTextEditor } from '@/lib/utils/firebase';
+import { addTextEditor } from '@/lib/utils/firebase';
 import { EmptyBoardsProps } from '@/types/dashboard';
+import useAddBoard from '@/hook/queries/useAddBoard';
 
-const EmptyBoards = ({ organizationId, onClick }: EmptyBoardsProps) => {
+const EmptyBoards = ({ organizationId }: EmptyBoardsProps) => {
+  const { mutateAsync: addBoard } = useAddBoard();
   const router = useRouter();
 
   const handleClick = async () => {
-    const boardId = await addBoard(organizationId);
-    await addTextEditor(boardId);
-    router.push(`/text-editor?id=${boardId}`);
+    const docRef = await addBoard(organizationId);
+    await addTextEditor(docRef.id, '새로운 보드');
+    router.push(`/text-editor?id=${docRef.id}`);
   };
 
   return (

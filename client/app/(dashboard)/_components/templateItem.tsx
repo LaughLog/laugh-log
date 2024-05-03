@@ -5,19 +5,21 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { TemplateItemProps } from '@/types/dashboard';
-import { addBoard, addTextEditor } from '@/lib/utils/firebase';
+import { addTextEditor } from '@/lib/utils/firebase';
+import useAddBoard from '@/hook/queries/useAddBoard';
 
 const TemplateItem = ({
   organizationId,
   type,
   imageUrl
 }: TemplateItemProps) => {
+  const { mutateAsync: addBoard } = useAddBoard();
   const router = useRouter();
 
   const clickToGenerateHandler = async () => {
-    const boardId = await addBoard(organizationId);
-    await addTextEditor(boardId, type);
-    router.push(`/text-editor?id=${boardId}`);
+    const docRef = await addBoard(organizationId);
+    await addTextEditor(docRef.id, type);
+    router.push(`/text-editor?id=${docRef.id}`);
   };
 
   return (

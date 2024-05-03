@@ -14,7 +14,6 @@ export type TeamBoardProps = {
 
 export type EmptyBoardsProps = {
   organizationId: string;
-  onClick: () => void;
 };
 
 export type BoardListType = {
@@ -40,6 +39,7 @@ export type BoardMenuProps = {
 };
 
 export type MenuItemProps = {
+  organizationId: string;
   boardId: string;
   boardName: string;
   header: string;
