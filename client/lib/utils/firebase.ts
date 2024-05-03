@@ -10,6 +10,8 @@ import {
 import { format } from 'date-fns';
 
 import { db } from '@/firebase/app';
+import { MEETING_MINUTES_TYPE, NEW_BOARD_TYPE } from '@/constants/textEditor';
+import { Block } from '@/types/textEditor';
 
 export const addOrganization = async (organizationId: string) => {
   const teamRef = doc(db, 'team', organizationId);
@@ -31,8 +33,8 @@ export const getBoardList = async (organizationId: string) => {
 
 export const addBoard = async (organizationId: string) => {
   const docRef = await addDoc(collection(db, 'team', organizationId, 'board'), {
-    name: 'Untitled',
-    date: format(new Date(), 'yyyy.MM.dd')
+    name: format(new Date(), 'yyyy.MM.dd  hh:mm') + ' 회의록',
+    date: format(new Date(), 'yyyy.MM.dd  hh:mm')
   });
   return docRef.id;
 };
@@ -58,4 +60,20 @@ export const deleteBoard = async ({
   boardId: string;
 }) => {
   await deleteDoc(doc(db, 'team', organizationId, 'board', boardId));
+  await deleteDoc(doc(db, 'text-editor', boardId));
+};
+
+export const addTextEditor = async (boardId: string, type: string) => {
+  let initBlock: Block[] = [];
+
+  switch (type) {
+    case '회의록':
+      initBlock = MEETING_MINUTES_TYPE;
+      break;
+    case '새로운 보드':
+      initBlock = NEW_BOARD_TYPE;
+      break;
+  }
+
+  await setDoc(doc(db, 'text-editor', boardId), { updatedBlocks: initBlock });
 };

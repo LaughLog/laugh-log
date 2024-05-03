@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 
-import { addBoard } from '@/lib/utils/firebase';
+import { addBoard, addTextEditor } from '@/lib/utils/firebase';
 import { EmptyBoardsProps } from '@/types/dashboard';
 
 const EmptyBoards = ({ organizationId, onClick }: EmptyBoardsProps) => {
@@ -8,7 +8,8 @@ const EmptyBoards = ({ organizationId, onClick }: EmptyBoardsProps) => {
 
   const handleClick = async () => {
     const boardId = await addBoard(organizationId);
-    router.push(`/workspace/${boardId}`);
+    await addTextEditor(boardId);
+    router.push(`/text-editor?id=${boardId}`);
   };
 
   return (

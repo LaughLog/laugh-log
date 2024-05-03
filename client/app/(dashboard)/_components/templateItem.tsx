@@ -5,18 +5,19 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { TemplateItemProps } from '@/types/dashboard';
-import { addBoard } from '@/lib/utils/firebase';
+import { addBoard, addTextEditor } from '@/lib/utils/firebase';
 
 const TemplateItem = ({
   organizationId,
-  name,
+  type,
   imageUrl
 }: TemplateItemProps) => {
   const router = useRouter();
 
   const clickToGenerateHandler = async () => {
     const boardId = await addBoard(organizationId);
-    router.push(`/workspace/${boardId}`);
+    await addTextEditor(boardId, type);
+    router.push(`/text-editor?id=${boardId}`);
   };
 
   return (
@@ -33,7 +34,7 @@ const TemplateItem = ({
       />
       <div className="flex items-center gap-[4px]">
         <Plus className="h-[16px] w-[16px] text-gray500" />
-        <span className="body2r tracking-tight">{name}</span>
+        <span className="body2r tracking-tight">{type}</span>
       </div>
     </button>
   );

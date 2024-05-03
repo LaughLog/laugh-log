@@ -4,7 +4,7 @@ export type StartWithTemplateProps = {
 
 export type TemplateItemProps = {
   organizationId: string;
-  name: string;
+  type: string;
   imageUrl: string;
 };
 
