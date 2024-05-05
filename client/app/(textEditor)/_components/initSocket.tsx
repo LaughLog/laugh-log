@@ -7,7 +7,7 @@ import { socket } from '@/socket/socket';
 import InitBlocks from './initBlocks';
 import Loading from '../(routes)/text-editor/loading';
 import { InitSocketProps } from '@/types/textEditor';
-import ErrorFallback from './blockFetchError';
+import BlockFetchError from './blockFetchError';
 
 const InitSocket = ({ children }: InitSocketProps) => {
   const [isConnected, setIsConnected] = useState(false);
@@ -22,7 +22,7 @@ const InitSocket = ({ children }: InitSocketProps) => {
   return (
     <>
       {children}
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ErrorBoundary FallbackComponent={BlockFetchError}>
         <Suspense fallback={<Loading />}>
           {isConnected && <InitBlocks />}
         </Suspense>

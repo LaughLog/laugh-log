@@ -182,7 +182,10 @@ const EditableBlock = ({
           socket.emit('add-blocks', blockId, previousHtml, newBlock);
 
           setTimeout(() => {
-            (element?.nextElementSibling as HTMLInputElement).focus();
+            setCaretTo(
+              'start',
+              element?.nextElementSibling as HTMLInputElement
+            );
           }, SET_TIME.FOCUS_NEXT_EL);
         }
       }
@@ -212,10 +215,10 @@ const EditableBlock = ({
           if (content)
             socket.emit('delete-blocks', blockId, previousBlock.id, newContent);
 
-          setTimeout(() => {
-            // 이전 블록의 마지막 커서 위치 기억
-            const offset = previousBlock.innerHTML.length;
+          // 이전 블록의 마지막 커서 위치 기억
+          const offset = previousBlock.innerHTML.length;
 
+          setTimeout(() => {
             // 이전 블록의 마지막 커서 위치로 focus
             if (offset) {
               const range = document.createRange();
@@ -259,9 +262,27 @@ const EditableBlock = ({
         | HTMLInputElement
         | undefined;
 
+      const offset = previousBlock?.innerHTML.length;
+
       // 이전 블록이 존재하고, article 태그가 아닌 경우에만 이동
-      if (previousBlock && previousBlock.tagName !== 'ARTICLE') {
-        setCaretTo('end', previousBlock);
+      if (
+        previousBlock &&
+        (offset || offset === 0) &&
+        previousBlock.tagName !== 'ARTICLE'
+      ) {
+        if (offset !== 0) {
+          const range = document.createRange();
+          const selection = window.getSelection();
+
+          selection?.removeAllRanges();
+          range.setStart(previousBlock.firstChild!, offset);
+          range.setEnd(previousBlock.firstChild!, offset);
+          selection?.addRange(range);
+
+          previousBlock.focus();
+        } else {
+          setCaretTo('start', previousBlock);
+        }
       }
     }
 
@@ -272,9 +293,22 @@ const EditableBlock = ({
       const nextBlock = currentBlock?.nextElementSibling as
         | HTMLInputElement
         | undefined;
+      const offset = nextBlock?.innerHTML.length;
 
-      if (nextBlock) {
-        setCaretTo('end', nextBlock);
+      if (nextBlock && (offset || offset === 0)) {
+        if (offset !== 0) {
+          const range = document.createRange();
+          const selection = window.getSelection();
+
+          selection?.removeAllRanges();
+          range.setStart(nextBlock.firstChild!, offset);
+          range.setEnd(nextBlock.firstChild!, offset);
+          selection?.addRange(range);
+
+          nextBlock.focus();
+        } else {
+          setCaretTo('start', nextBlock);
+        }
       }
     }
   };
