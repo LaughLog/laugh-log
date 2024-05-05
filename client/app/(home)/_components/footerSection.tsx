@@ -6,7 +6,7 @@ import FooterText from './_footerComponents/footerText';
 
 const FooterSection = () => {
   return (
-    <main className="relative flex h-[600px] w-full flex-col items-center px-[24px] tablet:h-[1200px] tablet:px-20 desktop:px-[148px]">
+    <footer className="relative flex h-[600px] w-full flex-col items-center px-[24px] tablet:h-[1200px] tablet:px-20 desktop:px-[148px]">
       <Image
         src={welcome}
         width={600}
@@ -20,7 +20,7 @@ const FooterSection = () => {
         alt="background-line"
       />
       <FooterText />
-    </main>
+    </footer>
   );
 };
 
