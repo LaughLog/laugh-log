@@ -1,4 +1,8 @@
-# Lagh Log : 실시간 회의 기록 (실시간 텍스트 에디터 편집)
+<p align="center">
+  <img src="https://github.com/LaughLog/laugh-log/assets/101972330/9f064909-561a-4596-9e3d-b128782859d1" width="400">
+</p>
+
+# Lagh Log : 실시간 텍스트 에디터 편집 App [Lagh Log →](https://laugh-log.vercel.app/)
 
 ## Contributor (R&R)
 
@@ -91,3 +95,5 @@ $ npm run dev
 ```
 $ npm run server
 ```
+
+![footer](https://github.com/LaughLog/laugh-log/assets/101972330/1fa180a2-9bb2-425c-9fde-7bf8871848b2)
