@@ -9,7 +9,7 @@ import goodJobSticker from '@/public/tomato-sticker.png';
 const Banner = () => {
   return (
     <section className="flex w-full flex-col items-center justify-center pt-16">
-      <div className="relative justify-center px-[24px] *:flex tablet:px-[80px] desktop:px-[148px]">
+      <div className="relative items-center justify-center px-[24px] *:flex tablet:px-[80px] desktop:px-[148px]">
         <Image
           className="hover-sticker absolute bottom-0 right-[40px] top-0 my-auto"
           src={starCircle}
@@ -34,7 +34,7 @@ const Banner = () => {
           alt="pointing-hand"
           width={240}
         />
-        <Image src={mainText} alt="Main-Banner-Text" height={480} />
+        <Image src={mainText} alt="Main-Banner-Text" height={550} />
       </div>
     </section>
   );
