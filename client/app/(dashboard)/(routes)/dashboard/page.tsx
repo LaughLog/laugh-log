@@ -37,7 +37,7 @@ const Dashboard = () => {
           </div>
         </div>
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-6 overflow-y-scroll rounded bg-coral200 p-4">
+        <div className="flex h-full w-full flex-col items-center justify-center gap-6 rounded bg-coral200">
           <Image src={LaughLog} alt="Laugh Log Logo" width={400} />
           <span className="subtitle5 text-center">
             현재 만들어진 Organization이 없어요.
