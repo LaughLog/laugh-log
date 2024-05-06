@@ -50,6 +50,7 @@ const Sidebar = () => {
       <div className="relative mt-6 h-[74px] w-[280px] hover:bg-coral200">
         <span className="absolute left-2 top-2 z-20 text-xs font-bold">팀</span>
         <OrganizationSwitcher
+          afterLeaveOrganizationUrl="/dashboard"
           hidePersonal
           appearance={{
             elements: {

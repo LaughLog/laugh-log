@@ -2,7 +2,9 @@
 
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import Image from 'next/image';
 import { useOrganization } from '@clerk/nextjs';
+import LaughLog from '@/public/laugh-log.svg';
 
 import Sidebar from '@/app/(dashboard)/_components/sidebar/sidebar';
 import StartWithTemplate from '@/app/(dashboard)/_components/startWithTemplate';
@@ -22,7 +24,7 @@ const Dashboard = () => {
   return (
     <div className="flex h-full w-full">
       <Sidebar />
-      {organization && (
+      {organization ? (
         <div className="flex h-full w-[calc(100vw-328px)] flex-col justify-between gap-16 overflow-hidden px-14">
           <StartWithTemplate organizationId={organization.id} />
           <div className="flex h-[calc(100vh-332px)] w-full flex-col gap-6">
@@ -33,6 +35,15 @@ const Dashboard = () => {
               </Suspense>
             </ErrorBoundary>
           </div>
+        </div>
+      ) : (
+        <div className="flex h-full w-full flex-col items-center justify-center gap-6 overflow-y-scroll rounded bg-coral200 p-4">
+          <Image src={LaughLog} alt="Laugh Log Logo" width={400} />
+          <span className="subtitle5 text-center">
+            현재 만들어진 Organization이 없어요.
+            <br />
+            사이드바에서 새로운 Organization을 생성해보세요!
+          </span>
         </div>
       )}
     </div>
