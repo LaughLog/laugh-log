@@ -9,7 +9,7 @@ app.get("/", (_req, res) => {
   res.send(`<html>
                   <body>
                       <div style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%)">
-                          <img src="https://picsum.photos/400/400?random=1">
+                          Laugh Log Backend
                       </div>
                   </body>
                  </html>`);
@@ -22,8 +22,6 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("We are connected");
-
   socket.on("add-blocks", (blockId, previousHtml, newBlock) => {
     io.emit("add-blocks", blockId, previousHtml, newBlock);
   });
@@ -38,10 +36,6 @@ io.on("connection", (socket) => {
 
   socket.on("set-block-tag", (id, tag) => {
     io.emit("set-block-tag", id, tag);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("disconnected");
   });
 });
 
