@@ -12,7 +12,7 @@ const FooterText = () => {
           즐거운 협업의 시작입니다.
         </span>
       </div>
-      <div className="flex w-[650px] w-[auto] justify-between px-14 desktop:w-[50%]">
+      <div className="mt-10 flex w-[650px] w-[auto] justify-between px-14 desktop:w-[50%]">
         <section className="flex w-[50%] translate-x-1/4 flex-col tablet:translate-x-1/2 desktop:translate-x-0">
           <div className="mb-4 font-bold">Contributor</div>
           <TextHint
