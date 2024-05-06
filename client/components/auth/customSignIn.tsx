@@ -7,7 +7,7 @@ const CustomSignIn = () => {
   return (
     <SignInButton>
       <Button>
-        <Link href={'/dashboard'}>로그인</Link>
+        <Link href={'/dashboard'}>구글 로그인</Link>
       </Button>
     </SignInButton>
   );
