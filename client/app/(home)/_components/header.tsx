@@ -13,7 +13,7 @@ const Header = () => {
   const [hookRef, isOnTop] = useRectOnTop();
 
   return (
-    <main
+    <header
       ref={hookRef as React.MutableRefObject<null>}
       className={cn(
         'sticky top-0 z-10 flex h-14 w-[100%] items-center justify-between px-6 tablet:px-20 desktop:px-[148px]',
@@ -32,7 +32,7 @@ const Header = () => {
           <CustomSignIn />
         </SignedOut>
       </div>
-    </main>
+    </header>
   );
 };
 
