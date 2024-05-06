@@ -1,11 +1,14 @@
 <p align="center">
   <img src="https://github.com/LaughLog/laugh-log/assets/101972330/9f064909-561a-4596-9e3d-b128782859d1" width="400">
   <h1>
-   Go to Laugh Log : 실시간 텍스트 에디터 편집 App
+   Laugh Log : 실시간 텍스트 에디터 편집 App
   </h1>
+  <p>
+  Laugh Log는 팀원을 초대하여 실시간으로 텍스트 에디텨 편집이 가능한 앱입니다.
   <a href='https://laugh-log.vercel.app/'>
-   Go to Laugh Log →
+   Laugh Log →
   </a>
+  </p>
 </p>
 
 ## Contributor (R&R)
