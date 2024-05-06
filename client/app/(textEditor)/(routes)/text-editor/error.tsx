@@ -1,18 +1,16 @@
 'use client';
 
+import { FallbackProps } from 'react-error-boundary';
+
 import { Button } from '@/components/ui/button';
 
-export default function Error({
-  error,
-  reset
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+const BlockFetchError = ({ error, resetErrorBoundary }: FallbackProps) => {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
-      <p className="subtitle5 mb-10">{'Error: ' + error}</p>
-      <Button onClick={() => reset()}>다시 시도</Button>
+    <div className="mx-0 my-auto flex h-[400px] w-full flex-col items-center justify-center">
+      <p className="subtitle5 my-10">{'Error: ' + error}</p>
+      <Button onClick={resetErrorBoundary}>다시 시도</Button>
     </div>
   );
-}
+};
+
+export default BlockFetchError;

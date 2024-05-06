@@ -1,14 +1,16 @@
 'use client';
 
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useOrganization } from '@clerk/nextjs';
 
-import { addOrganization } from '@/lib/utils/firebase';
 import Sidebar from '@/app/(dashboard)/_components/sidebar/sidebar';
 import StartWithTemplate from '@/app/(dashboard)/_components/startWithTemplate';
 import TeamBoard from '@/app/(dashboard)/_components/teamBoard';
-import { Suspense } from 'react';
-import Loading from './loading';
 import Subtitle from '../../_components/subtitle';
+import { addOrganization } from '@/lib/utils/firebase';
+import Loading from './loading';
+import BoardFetchError from './error';
 
 const Dashboard = () => {
   const { organization } = useOrganization();
@@ -25,9 +27,11 @@ const Dashboard = () => {
           <StartWithTemplate organizationId={organization.id} />
           <div className="flex h-[calc(100vh-332px)] w-full flex-col gap-6">
             <Subtitle>회의록</Subtitle>
-            <Suspense fallback={<Loading />}>
-              <TeamBoard organizationId={organization.id} />
-            </Suspense>
+            <ErrorBoundary FallbackComponent={BoardFetchError}>
+              <Suspense fallback={<Loading />}>
+                <TeamBoard organizationId={organization.id} />
+              </Suspense>
+            </ErrorBoundary>
           </div>
         </div>
       )}

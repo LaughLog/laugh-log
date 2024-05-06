@@ -7,7 +7,7 @@ import { socket } from '@/socket/socket';
 import InitBlocks from './initBlocks';
 import Loading from '../(routes)/text-editor/loading';
 import { InitSocketProps } from '@/types/textEditor';
-import BlockFetchError from './blockFetchError';
+import BlockFetchError from '../(routes)/text-editor/error';
 
 const InitSocket = ({ children }: InitSocketProps) => {
   const [isConnected, setIsConnected] = useState(false);

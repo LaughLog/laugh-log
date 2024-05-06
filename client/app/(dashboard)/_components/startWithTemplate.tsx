@@ -9,7 +9,7 @@ const StartWithTemplate = ({ organizationId }: StartWithTemplateProps) => {
   return (
     <main className="mt-7 flex h-60  flex-col justify-between overflow-hidden">
       <Subtitle>템플릿으로 회의 작성하기</Subtitle>
-      <div className="h-45 flex flex-nowrap items-center gap-[24px] overflow-x-scroll rounded bg-coral200 p-4">
+      <div className="h-45 flex flex-nowrap items-center gap-[24px] rounded bg-coral200 p-4">
         {template.map((type, inx) => (
           <TemplateItem
             key={inx}
