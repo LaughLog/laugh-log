@@ -17,6 +17,7 @@ export default function Home() {
           src={line}
           alt="Laugh Log lines"
           width={1440}
+          priority
         />
         <Banner />
         <DescSection />
