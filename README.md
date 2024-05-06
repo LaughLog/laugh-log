@@ -1,8 +1,12 @@
 <p align="center">
   <img src="https://github.com/LaughLog/laugh-log/assets/101972330/9f064909-561a-4596-9e3d-b128782859d1" width="400">
+  <h1>
+   Go to Laugh Log : 실시간 텍스트 에디터 편집 App
+  </h1>
+  <a href='https://laugh-log.vercel.app/'>
+   Go to Laugh Log →
+  </a>
 </p>
-
-# Lagh Log : 실시간 텍스트 에디터 편집 App [Lagh Log →](https://laugh-log.vercel.app/)
 
 ## Contributor (R&R)
 
