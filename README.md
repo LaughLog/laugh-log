@@ -13,26 +13,26 @@
 
 ## Contributor (R&R)
 
-- @JitHoon (최지훈)
+@JitHoon (최지훈)
 
-  1. 텍스트 에디터 페이지
-  2. 텍스트 에디터 CRUD
-  3. 실시간 텍스트 에디터 편집 기능 (Socket)
-  4. 비동기 요청 컴포넌트 관리 및 UX 개선 (Tanstack-Query)
-  5. 성능 최적화 (Lighthouse(70 -> 99))
-  6. Socket Backend server Deploy (S3)
-  7. Client CI/CD (Vercel)
+1. 텍스트 에디터 페이지
+2. 텍스트 에디터 CRUD
+3. 실시간 텍스트 에디터 편집 기능 (Socket)
+4. 비동기 요청 컴포넌트 관리 및 UX 개선 (Tanstack-Query)
+5. 성능 최적화 (Lighthouse(70 -> 99))
+6. Socket Backend server Deploy (S3)
+7. Client CI/CD (Vercel)
 
-- @ovoxiix (한은지)
+@ovoxiix (한은지)
 
-  1. 대시보드 페이지
-  2. 팀 CRUD (Firestore, Clerk)
+1. 대시보드 페이지
+2. 팀 CRUD (Firestore, Clerk)
 
-- @Bumang-Cyber (정범환)
+@Bumang-Cyber (정범환)
 
-  1. 랜딩 페이지
-  2. [Figma](https://www.figma.com/file/XEjq8zLQXhePf9d2x7WFPN/LaughLog?type=design&node-id=0-1&mode=design&t=UEYVIhHWxxBHBdYQ-0)
-  3. 디자인 시스템 (Tailwind)
+1. 랜딩 페이지
+2. [Figma](https://www.figma.com/file/XEjq8zLQXhePf9d2x7WFPN/LaughLog?type=design&node-id=0-1&mode=design&t=UEYVIhHWxxBHBdYQ-0)
+3. 디자인 시스템 (Tailwind)
 
 ## Tech Requirment (Tech Stack)
 
