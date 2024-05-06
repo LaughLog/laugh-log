@@ -6,12 +6,12 @@ import FooterText from './_footerComponents/footerText';
 
 const FooterSection = () => {
   return (
-    <footer className="relative flex h-[600px] w-full flex-col items-center px-[24px] tablet:h-[1200px] tablet:px-20 desktop:px-[148px]">
+    <footer className="relative flex h-[600px] w-full flex-col items-center px-[24px] tablet:h-[1300px] tablet:px-20 desktop:px-[148px]">
       <Image
         src={welcome}
         width={600}
         alt="logo"
-        className="absolute bottom-24 left-20 opacity-30 tablet:bottom-[300px] tablet:opacity-100"
+        className="absolute bottom-[200px] left-20 opacity-100"
       />
       <Image
         src={lines2}

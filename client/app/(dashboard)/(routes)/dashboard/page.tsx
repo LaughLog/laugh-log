@@ -25,7 +25,7 @@ const Dashboard = () => {
     <div className="flex h-full w-full">
       <Sidebar />
       {organization ? (
-        <div className="flex h-full w-[calc(100vw-328px)] flex-col justify-between gap-16 overflow-hidden px-14">
+        <div className="flex h-full w-[calc(100vw-328px)] flex-col justify-between gap-16 overflow-hidden bg-signIn bg-cover px-14">
           <StartWithTemplate organizationId={organization.id} />
           <div className="flex h-[calc(100vh-332px)] w-full flex-col gap-6">
             <Subtitle>회의록</Subtitle>
@@ -37,7 +37,7 @@ const Dashboard = () => {
           </div>
         </div>
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-6 rounded bg-coral200">
+        <div className="flex h-full w-full flex-col items-center justify-center gap-6 rounded bg-coral200 bg-signIn bg-cover">
           <Image src={LaughLog} alt="Laugh Log Logo" width={400} />
           <span className="subtitle5 text-center">
             현재 만들어진 Organization이 없어요.

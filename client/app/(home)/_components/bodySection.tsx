@@ -4,7 +4,7 @@ import descImage from '@/public/desc-image1.png';
 
 const DescSection = () => {
   return (
-    <div className="flex items-center justify-center gap-6 px-6 pb-20 pt-52">
+    <div className="flex items-center justify-center gap-6 px-6 py-52">
       <div className="flex h-[1000px] w-[1000px] w-full  flex-col items-center justify-center gap-24">
         <section className="flex flex-col items-center gap-8">
           <span className="whitespace-nowrap text-center text-[60px] font-bold	tracking-tight">
