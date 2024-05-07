@@ -58,25 +58,25 @@
 
 ### 랜딩 페이지
 
-- Lighthouse 성능 최적화 (최초 로드 속도 개선) [자세히 보기 →]()
+- Lighthouse 성능 최적화 (최초 로드 속도 개선)
 
 ![랜딩페이지](https://github.com/LaughLog/laugh-log/assets/101972330/20ea4c00-68f9-4972-9a24-94fd8f77ebf1)
 
 ### 실시간 텍스트 에디터 페이지
 
-- Next.js Server Component로 한 페이지에서 다양한 렌더링 전략 구현 [자세히 보기 →]()
+- Next.js Server Component로 한 페이지에서 다양한 렌더링 전략 구현
 
-- 디바운싱(debouncing)를 활용한 실시간 서버 요청 최적화 [자세히 보기 →]()
+- 디바운싱(debouncing)를 활용한 실시간 서버 요청 최적화
 
-- Block 단위의 텍스트 에디터 실시간(socket) 상태 관리 [자세히 보기 →]()
+- Block 단위의 텍스트 에디터 실시간(socket) 상태 관리
 
-- AWS EC2 백엔드 https 배포 [자세히 보기 →]()
+- AWS EC2 백엔드 https 배포
 
 ![텍스트에디터페이지](https://github.com/LaughLog/laugh-log/assets/101972330/ef604f43-b1e4-418e-86fe-f608328cdef4)
 
 ### 대시보드 페이지
 
-- Tanstack-Query를 활용한 서버 상태 관리 및 UX 개선[자세히 보기 →]()
+- Tanstack-Query를 활용한 서버 상태 관리 및 UX 개
 
 ![대시보드페이지](https://github.com/LaughLog/laugh-log/assets/101972330/fba598b2-8280-460f-9c15-ee9bfbd3dacf)
 
