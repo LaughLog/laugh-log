@@ -20,7 +20,7 @@
 3. 실시간 텍스트 에디터 편집 기능 (Socket)
 4. 비동기 요청 컴포넌트 관리 및 UX 개선 (Tanstack-Query)
 5. 성능 최적화 (Lighthouse(70 -> 99))
-6. Socket Backend server Deploy (S3)
+6. Socket Backend server Deploy (EC2)
 7. Client CI/CD (Vercel)
 
 @ovoxiix (한은지)
@@ -52,7 +52,7 @@
 - Node.js
 - Express
 - Socket.io
-- AWS S3
+- AWS EC2
 
 ## Main Page Images & Learning Points
 
@@ -70,7 +70,7 @@
 
 - Block 단위의 텍스트 에디터 실시간(socket) 상태 관리 [자세히 보기 →]()
 
-- AWS S3 백엔드 https 배포 [자세히 보기 →]()
+- AWS EC2 백엔드 https 배포 [자세히 보기 →]()
 
 ![텍스트에디터페이지](https://github.com/LaughLog/laugh-log/assets/101972330/ef604f43-b1e4-418e-86fe-f608328cdef4)
 
