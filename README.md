@@ -76,7 +76,7 @@
 
 ### 대시보드 페이지
 
-- Tanstack-Query를 활용한 서버 상태 관리 및 UX 개
+- Tanstack-Query를 활용한 서버 상태 관리 및 UX 개선
 
 ![대시보드페이지](https://github.com/LaughLog/laugh-log/assets/101972330/fba598b2-8280-460f-9c15-ee9bfbd3dacf)
 
