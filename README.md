@@ -11,6 +11,10 @@
   </p>
 </p>
 
+## Troubleshooting
+
+- [Next 환경 변수 설정 시, prefix로 NEXT*PUBLIC* 은 언제 붙여야 하는가?](https://github.com/LaughLog/laugh-log/wiki/Next-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EC%84%A4%EC%A0%95-%EC%8B%9C,-prefix%EB%A1%9C-NEXT_PUBLIC_-%EB%8A%94-%EC%96%B8%EC%A0%9C-%EB%B6%99%EC%97%AC%EC%95%BC-%ED%95%98%EB%8A%94%EA%B0%80%3F)
+
 ## Contributor (R&R)
 
 @JitHoon (최지훈)
