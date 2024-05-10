@@ -13,6 +13,7 @@
 
 ## Troubleshooting
 
+- [AWS EC2 https 배포와 네트워크 1 (EC2 인스턴스 생성 및 Elastic IP 연결)](<https://github.com/LaughLog/laugh-log/wiki/AWS-EC2-https-%EB%B0%B0%ED%8F%AC%EC%99%80-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-1-(EC2-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%83%9D%EC%84%B1-%EB%B0%8F-Elastic-IP-%EC%97%B0%EA%B2%B0)>)
 - [CSS‐in‐JS와 Next.js에서 Tailwind를 추천하는 이유](https://github.com/LaughLog/laugh-log/wiki/CSS%E2%80%90in%E2%80%90JS%EC%99%80-Next.js%EC%97%90%EC%84%9C-Tailwind%EB%A5%BC-%EC%B6%94%EC%B2%9C%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0)
 - [Tailwind Theme, @layer base, components, utilities 활용하기](https://github.com/LaughLog/laugh-log/wiki/Tailwind-Theme,-@layer-base,-components,-utilities-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0)
 - [Tailwind에서 CSS Nesting 문법 사용하기](https://github.com/LaughLog/laugh-log/wiki/Tailwind%EC%97%90%EC%84%9C-CSS-Nesting-%EB%AC%B8%EB%B2%95-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
